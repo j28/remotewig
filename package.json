@@ -1,7 +1,14 @@
 {
-    "name": "Node OSC Bitwig",
-    "version": "0.1",
-    "dependencies": {
-        "osc": "2.4.1"
-    }
+	"name": "osc node bitwig",
+	"version": "0.1",
+	"description": "An Node OSC server connecting with Bitwig.",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/j28/osc-node-bitwig.git"
+	},
+	"private": true,
+	"license": "BSD-3-Clause",
+	"dependencies": {
+		"osc": "2.4.1"
+	}
 }
