@@ -1,0 +1,7 @@
+{
+    "name": "Node OSC Bitwig",
+    "version": "0.1",
+    "dependencies": {
+        "osc": "2.4.1"
+    }
+}
