@@ -1,6 +1,6 @@
 {
-	"name": "osc node bitwig",
-	"version": "0.1",
+	"name": "osc-node-bitwig",
+	"version": "1.0.0",
 	"description": "An Node OSC server connecting with Bitwig.",
 	"repository": {
 		"type": "git",
