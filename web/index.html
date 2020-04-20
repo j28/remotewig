@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>osc.js Web Socket Demo</title>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" type="text/css" media="all" href="osc-view.css"></link>
-        <script src="node_modules/jquery/dist/jquery.js"></script>
-        <script src="node_modules/osc/dist/osc-browser.min.js"></script>
-        <script type="text/javascript">
+<head>
+<title>osc.js Web Socket Demo</title>
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" media="all" href="osc-view.css"></link>
 
-            var port = new osc.WebSocketPort({
-                url: "ws://localhost:8081"
-            });
+<script src="node_modules/jquery/dist/jquery.js"></script>
+<script src="node_modules/osc/dist/osc-browser.min.js"></script>
+<script type="text/javascript">
 
-            port.on("message", function (oscMessage) {
-                $("#message").text(JSON.stringify(oscMessage, undefined, 2));
-                console.log("message", oscMessage);
-            });
+var port = new osc.WebSocketPort({
+	url: "ws://localhost:8081"
+});
 
-            port.open();
+port.on("message", function (oscMessage) {
+	$("#message").text(JSON.stringify(oscMessage, undefined, 2));
+	console.log("message", oscMessage);
+});
 
-            var sayHello = function () {
-                port.send({
-                    address: "/hello",
-                    args: ["world"]
-                });
-            };
+port.open();
 
-        </script>
-    </head>
+var sayHello = function () {
+	port.send({
+		address: "/hello",
+		args: ["world"]
+	});
+};
 
-    <body>
-        <h1>osc.js Web Socket Demo</h1>
+</script>
+</head>
 
-        <div id="messageArea">
-            <p id="messageLabel">OSC Message:</p>
-            <pre id="message"></pre>
-        </div>
+<body>
 
-        <button onclick="sayHello()">Send OSC message</button>
-    </body>
+<h1>osc.js Web Socket Demo</h1>
+
+<div id="messageArea">
+	<p id="messageLabel">OSC Message:</p>
+	<pre id="message"></pre>
+</div>
+
+<button onclick="sayHello()">Send OSC message</button>
+
+</body>
 </html>
