@@ -1,8 +1,11 @@
-# Bi-directional UDP <-> web browser example
+# Bi-directional UDP <-> web browser 
 
 This example opens a Web Socket in a web page that communicates with a Node.js server.
-The server is responsible for relaying OSC messages bidirectionally between the web page and set of
-example Python scripts.
+The server is responsible for relaying OSC messages bidirectionally between the web page and Bitwig.
+
+# Original Installation and Running Instructions
+
+The instructions below are for testing the bridge with Python. I modified it to work with Bitwig instead, but need to update the instructions.
 
 ## Installation
 
