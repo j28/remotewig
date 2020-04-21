@@ -1,3 +1,23 @@
+html, body {
+	margin:0;
+	padding:0;
+}
+
+body {
+	background-color: #2e2e2e;
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url(assets/fonts/poppins/Poppins-Regular.otf);
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url(assets/fonts/poppins/Poppins-SemiBold.otf);
+	font-weight: 800;
+}
+
 #toolbar {
 	padding: 0.5em 0.5em 0.75em 0.5em;
 }
@@ -5,11 +25,12 @@
 #messageArea {
 	color: #fff;
 	background-color: #aaa;
-	border-radius: 10px;
 	padding-left: 0.75em;
 	padding-top: 0.1em;
-	height: 93%;
-	width: 98%;
+	padding-bottom: 0.1em;
+/*	height: 93%;
+	width: 98%;*/
+	margin-bottom: 20px;
 }
 
 #udpStatus {
@@ -19,11 +40,34 @@
 	padding-top: 0.5em;
 }
 
-#messageLabel {
-	font-weight: bold;
-}
-
 #message {
 	font-family: monospace;
-	font-size: 148%;
+	font-size: 16px;
+}
+
+#bwSelector {
+	height:100px;
+	background-color: #2e2e2e;
+/*	margin-bottom:250px;*/
+}
+#currentTrack {
+	height:100px;
+	text-align: center;
+	line-height: 100px;
+	color:#fff;
+	font-family: Poppins;
+	font-weight: 800;
+	font-size: 20px;
+}
+
+
+
+#butSend {
+	font-family: monospace;
+	font-size: 16px;
+	padding:14px 10px;
+	border:none;
+	width:200px;
+	margin: 0 auto;
+	display:block;
 }

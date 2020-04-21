@@ -10,25 +10,45 @@
 <script src="node_modules/osc/dist/osc-browser.min.js"></script>
 <script src="node_modules/osc/dist/osc-browser.min.js"></script>
 <script src="../local-url.js"></script>
-<script src="live.js#html"></script>
+<script src="live.js"></script>
 
 <script type="text/javascript">
 
 var bitwig = {};
 
-bitwig.currentTrackColor = function (red, green, blue){
-
-}
 
 bitwig.parseMessage = function (oscMessage) {
 	var currentMessage = oscMessage;
-	console.log("inside parser");
+	console.log(">> bitwig.parseMessage");
 	if (currentMessage.address == "/track"){
+		bitwig.currentTrack(currentMessage);
+	}
+
+}
+
+bitwig.currentTrack = function (oscMessage) {
+
+		console.log(">> bitwig.currentTrack");
 		console.log(oscMessage.args[0]);
 		console.log(oscMessage.args[1]);
 		console.log(oscMessage.args[2]);
 		console.log(oscMessage.args[3]);
-	}
+
+		var currentTrack = oscMessage;
+		var trackName = oscMessage.args[0];
+		var trackRed = oscMessage.args[1];
+		var trackGreen = oscMessage.args[2];
+		var trackBlue = oscMessage.args[3];
+
+		var strBegin = "rgb(";
+		var strComma = ", ";
+		var strEnd = ")";
+		var strFull = strBegin.concat(trackRed, strComma, trackGreen, strComma, trackBlue, strEnd);
+		console.log(strFull);
+
+		document.getElementById("currentTrack").style.backgroundColor = strFull;
+		$("#currentTrack").text(trackName);
+		document.getElementById("body").innerHTML = "track color is " + strFull;
 
 }
 
@@ -55,13 +75,17 @@ var sayHello = function () {
 
 <body>
 
-
-<div id="messageArea">
-	<p id="messageLabel">OSC Message:</p>
-	<pre id="message"></pre>
+<div id="bwSelector">
+	<div id="currentTrack">
+	</div>
 </div>
 
-<button onclick="sayHello()">Send OSC message</button>
+
+<div id="messageArea">
+	<pre id="message">nothing yet</pre>
+</div>
+
+<button id="butSend" onclick="sayHello()">Send OSC message</button>
 
 </body>
 </html>
