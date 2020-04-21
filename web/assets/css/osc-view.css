@@ -5,6 +5,8 @@ html, body {
 
 body {
 	background-color: #2e2e2e;
+	font-family: Poppins;
+	color: #fff;
 }
 
 @font-face {
@@ -31,6 +33,7 @@ body {
 /*	height: 93%;
 	width: 98%;*/
 	margin-bottom: 20px;
+	clear:both;
 }
 
 #udpStatus {
@@ -46,7 +49,7 @@ body {
 }
 
 #bwSelector {
-	height:100px;
+/*	height:100px;*/
 	background-color: #2e2e2e;
 /*	margin-bottom:250px;*/
 }
@@ -60,7 +63,33 @@ body {
 	font-size: 20px;
 }
 
+#devices {
+	min-height:100px;
+}
 
+#devices button {
+	height: 100px;
+	float:left;
+	width:206px;
+/*	padding:0 20px;*/
+	border:none;
+	border-bottom: 1px solid #2e2e2e;
+	line-height: 100px;
+	font-size: 16px;
+	display:block;
+	background-color: #fd7d28;
+	text-align: center;
+	color:#fff;
+}
+
+#devices button:active {
+	background-color: #000;
+}
+
+#devices button:nth-child(odd) {
+	border-right: 1px solid #2e2e2e;
+	width:207px;
+}
 
 #butSend {
 	font-family: monospace;
