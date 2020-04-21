@@ -30,8 +30,6 @@ body {
 	padding-left: 0.75em;
 	padding-top: 0.1em;
 	padding-bottom: 0.1em;
-/*	height: 93%;
-	width: 98%;*/
 	margin-bottom: 20px;
 	clear:both;
 }
@@ -49,9 +47,7 @@ body {
 }
 
 #bwSelector {
-/*	height:100px;*/
 	background-color: #2e2e2e;
-/*	margin-bottom:250px;*/
 }
 #currentTrack {
 	height:100px;
@@ -65,16 +61,14 @@ body {
 }
 
 #devices {
-	min-height:100px;
+	margin-bottom: 10px;
 }
 
 #devices button {
-	height: 80px;
+	height: 95px;
 	width:206px;
-/*	padding:0 20px;*/
 	border:none;
 	border-bottom: 1px solid #2e2e2e;
-	line-height: 80px;
 	font-size: 17px;
 	display:block;
 	background-color: #fd7d28;
@@ -83,7 +77,7 @@ body {
 }
 
 #devices button.deviceActive {
-	background-color: #000;
+	background-color: #444;
 }
 
 #devices button:active {

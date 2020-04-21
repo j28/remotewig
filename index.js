@@ -4,7 +4,6 @@
 var osc = require("osc"),
 	WebSocket = require("ws");
 
-
 var connect = require('connect');
 var serveStatic = require('serve-static');
 

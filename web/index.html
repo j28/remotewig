@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/images/bitwig-192.png">
 
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" type="text/css" media="all" href="assets/css/osc-view.css"></link>
+<link rel="stylesheet" type="text/css" media="all" href="assets/css/bitwig.css"></link>
 <script src="node_modules/jquery/dist/jquery.js"></script>
 <script src="node_modules/osc/dist/osc-browser.min.js"></script>
 <script src="../local-url.js"></script>
@@ -18,9 +18,8 @@
 
 var bitwig = {};
 
-
-
 bitwig.parseMessage = function (oscMessage) {
+
 	var currentMessage = oscMessage;
 	console.log(">> bitwig.parseMessage");
 	if (currentMessage.address == "/track/name"){
@@ -80,8 +79,6 @@ bitwig.currentTrackDevices = function (oscMessage) {
 	// var trackDevice1 = oscMessage.args[0];
 	// $("#currentTrack").text(trackName);
 
-
-
 	$('#devices').html('')
 	$.each( currentTrack.args, function( index, value ){
 		if(index == cursorDeviceIndex ){
@@ -89,7 +86,6 @@ bitwig.currentTrackDevices = function (oscMessage) {
 		} else {
 			$('#devices').append('<button data-index="' + index + '">'+ value +'</button>');
 		}
-
 
 	});
 
@@ -119,13 +115,12 @@ port.on("message", function (oscMessage) {
 
 port.open();
 
-var sayHello = function () {
+var sendTest = function () {
 	port.send({
 		address: "/track",
 		args: [1]
 	});
 };
-
 
 </script>
 </head>
@@ -139,12 +134,11 @@ var sayHello = function () {
 	</div>
 </div>
 
-
 <div id="messageArea">
 	<pre id="message">Select a track</pre>
 </div>
 
-<button id="butSend" onclick="sayHello()">Send OSC message</button>
+<button id="butSend" onclick="sendTest()">Send OSC message</button>
 
 </body>
 </html>
