@@ -4,6 +4,14 @@
 var osc = require("osc"),
 	WebSocket = require("ws");
 
+
+var connect = require('connect');
+var serveStatic = require('serve-static');
+
+connect()
+	.use(serveStatic(__dirname))
+	.listen(8080, () => console.log('Server running on 8080...'));
+
 var getIPAddresses = function () {
 	var os = require("os"),
 	interfaces = os.networkInterfaces(),

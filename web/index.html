@@ -7,10 +7,12 @@
 
 <script src="node_modules/jquery/dist/jquery.js"></script>
 <script src="node_modules/osc/dist/osc-browser.min.js"></script>
+<script src="node_modules/osc/dist/osc-browser.min.js"></script>
+<script src="../local-url.js"></script>
 <script type="text/javascript">
 
 var port = new osc.WebSocketPort({
-	url: "ws://localhost:8081"
+	url: localURL
 });
 
 port.on("message", function (oscMessage) {
