@@ -5,14 +5,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/images/bitwig-192.png">
 
-<link rel="manifest" href="/manifest.json">
-<link rel="stylesheet" type="text/css" media="all" href="osc-view.css"></link>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" type="text/css" media="all" href="assets/css/osc-view.css"></link>
 <script src="node_modules/jquery/dist/jquery.js"></script>
 <script src="node_modules/osc/dist/osc-browser.min.js"></script>
 <script src="node_modules/osc/dist/osc-browser.min.js"></script>
 <script src="../local-url.js"></script>
-<script src="live.js"></script>
+<script src="assets/js/live.js"></script>
 
 <script type="text/javascript">
 
@@ -84,7 +85,7 @@ var sayHello = function () {
 
 
 <div id="messageArea">
-	<pre id="message">nothing yet</pre>
+	<pre id="message">Select a track</pre>
 </div>
 
 <button id="butSend" onclick="sayHello()">Send OSC message</button>
