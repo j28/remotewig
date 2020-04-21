@@ -3,13 +3,34 @@
 <head>
 <title>osc.js Web Socket Demo</title>
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <link rel="stylesheet" type="text/css" media="all" href="osc-view.css"></link>
 
 <script src="node_modules/jquery/dist/jquery.js"></script>
 <script src="node_modules/osc/dist/osc-browser.min.js"></script>
 <script src="node_modules/osc/dist/osc-browser.min.js"></script>
 <script src="../local-url.js"></script>
+<script src="live.js#html"></script>
+
 <script type="text/javascript">
+
+var bitwig = {};
+
+bitwig.currentTrackColor = function (red, green, blue){
+
+}
+
+bitwig.parseMessage = function (oscMessage) {
+	var currentMessage = oscMessage;
+	console.log("inside parser");
+	if (currentMessage.address == "/track"){
+		console.log(oscMessage.args[0]);
+		console.log(oscMessage.args[1]);
+		console.log(oscMessage.args[2]);
+		console.log(oscMessage.args[3]);
+	}
+
+}
 
 var port = new osc.WebSocketPort({
 	url: localURL
@@ -17,7 +38,7 @@ var port = new osc.WebSocketPort({
 
 port.on("message", function (oscMessage) {
 	$("#message").text(JSON.stringify(oscMessage, undefined, 2));
-	console.log("message", oscMessage);
+	bitwig.parseMessage(oscMessage);
 });
 
 port.open();
@@ -34,7 +55,6 @@ var sayHello = function () {
 
 <body>
 
-<h1>osc.js Web Socket Demo</h1>
 
 <div id="messageArea">
 	<p id="messageLabel">OSC Message:</p>
