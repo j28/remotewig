@@ -35,54 +35,56 @@ bitwig.parseMessage = function (oscMessage) {
 
 bitwig.currentTrackName = function (oscMessage) {
 
-		console.log(">> bitwig.currentTrackName");
-		console.log(oscMessage.args[0]);
+	console.log(">> bitwig.currentTrackName");
+	console.log(oscMessage.args[0]);
 
-		var currentTrack = oscMessage;
-		var trackName = oscMessage.args[0];
-		$("#currentTrack").text(trackName);
+	var currentTrack = oscMessage;
+	var trackName = oscMessage.args[0];
+	$("#currentTrack").text(trackName);
 
 }
 
 bitwig.currentTrackColor = function (oscMessage) {
 
-		console.log(">> bitwig.currentTrackColor");
-		console.log(oscMessage.args[0]);
-		console.log(oscMessage.args[1]);
-		console.log(oscMessage.args[2]);
+	console.log(">> bitwig.currentTrackColor");
+	console.log(oscMessage.args[0]);
+	console.log(oscMessage.args[1]);
+	console.log(oscMessage.args[2]);
 
-		var currentTrack = oscMessage;
-		var trackRed = oscMessage.args[0];
-		var trackGreen = oscMessage.args[1];
-		var trackBlue = oscMessage.args[2];
+	var currentTrack = oscMessage;
+	var trackRed = oscMessage.args[0];
+	var trackGreen = oscMessage.args[1];
+	var trackBlue = oscMessage.args[2];
 
-		var strBegin = "rgb(";
-		var strComma = ", ";
-		var strEnd = ")";
-		var strFull = strBegin.concat(trackRed, strComma, trackGreen, strComma, trackBlue, strEnd);
-		console.log(strFull);
+	var strBegin = "rgb(";
+	var strComma = ", ";
+	var strEnd = ")";
+	var strFull = strBegin.concat(trackRed, strComma, trackGreen, strComma, trackBlue, strEnd);
+	console.log(strFull);
 
-		$("#currentTrack").css("background-color", strFull);
+	$("#currentTrack").css("background-color", strFull);
 
 }
 
 bitwig.currentTrackDevices = function (oscMessage) {
 
-		console.log(">> bitwig.currentTrackDevices");
-		console.log(oscMessage.args);
+	console.log(">> bitwig.currentTrackDevices");
+	console.log(oscMessage.args);
 
-		var currentTrack = oscMessage;
-		// var trackDevice1 = oscMessage.args[0];
-		// $("#currentTrack").text(trackName);
+	var currentTrack = oscMessage;
+	// var trackDevice1 = oscMessage.args[0];
+	// $("#currentTrack").text(trackName);
 
-		$('#devices').html('')
-		$.each( currentTrack.args, function( index, value ){
-			$('#devices').append('<button data-index="' + index + '">'+ value +'</button>');
+	$('#devices').html('')
+	$.each( currentTrack.args, function( index, value ){
+		$('#devices').append('<button data-index="' + index + '">'+ value +'</button>');
 
-		});
+	});
 
 	$("#devices button").on( "click", function() {
 
+		$("#devices button").removeClass( "deviceActive" );
+		$( this ).addClass( "deviceActive" );
 		var currentDeviceIndex = $( this ).data( "index" );
 		// console.log("bananananannananan" + currentDeviceIndex );
 		port.send({
@@ -92,8 +94,7 @@ bitwig.currentTrackDevices = function (oscMessage) {
 
 	});
 
-
-}
+};
 
 var port = new osc.WebSocketPort({
 	url: localURL

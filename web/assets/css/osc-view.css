@@ -61,6 +61,7 @@ body {
 	font-family: Poppins;
 	font-weight: 800;
 	font-size: 20px;
+	border-bottom: 1px solid #2e2e2e;
 }
 
 #devices {
@@ -68,18 +69,21 @@ body {
 }
 
 #devices button {
-	height: 100px;
-	float:left;
+	height: 80px;
 	width:206px;
 /*	padding:0 20px;*/
 	border:none;
 	border-bottom: 1px solid #2e2e2e;
-	line-height: 100px;
-	font-size: 16px;
+	line-height: 80px;
+	font-size: 17px;
 	display:block;
 	background-color: #fd7d28;
 	text-align: center;
 	color:#fff;
+}
+
+#devices button.deviceActive {
+	background-color: #000;
 }
 
 #devices button:active {
