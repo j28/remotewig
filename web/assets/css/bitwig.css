@@ -97,6 +97,11 @@ body {
 	background-size: 21.94px 38.00px;
 }
 
+#devices button.deviceSlotDevice {
+	float:left;
+	background-color: #999;
+}
+
 #devices button:active {
 	background-color: #000;
 }

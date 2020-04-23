@@ -28,8 +28,8 @@ bitwig.parseMessage = function (oscMessage) {
 	console.log(">> bitwig.parseMessage: " + currentMessage.address);
 	console.log(currentMessage.args);
 
-	if (currentMessage.address == "/track/device/current"){
-		bitwig.currentDeviceSet(currentMessage);
+	if (currentMessage.address == "/track/device/cursor"){
+		bitwig.cursorDeviceSet(currentMessage);
 	// } else if (currentMessage.address == "/track/color"){
 	// 	bitwig.currentTrackColor(currentMessage);
 	// } else if (currentMessage.address == "/track/devices"){
@@ -38,9 +38,9 @@ bitwig.parseMessage = function (oscMessage) {
 
 }
 
-bitwig.currentDeviceSet = function (oscMessage) {
+bitwig.cursorDeviceSet = function (oscMessage) {
 
-	console.log(">> bitwig.currentDeviceSet");
+	console.log(">> bitwig.cursorDeviceSet");
 	console.log("cursorDeviceIndex is: " + oscMessage.args[0]);
 
 	var cursorDeviceIndex = oscMessage.args[0];
@@ -202,26 +202,26 @@ bitwig.parseBundle = function (oscBundle) {
 				var deviceSlot = slotValue.args[0];
 				// console.log(deviceSlot);
 
-				$('#devices').append('<button class="deviceSlot" data-slot-index="' + slotIndex + '">'+ deviceSlot +'</button>');
-
-			});
-
-
-			$(".deviceSlot").on( "click", function() {
-
-				$(".device").removeClass( "deviceActive" );
-				$(".deviceSlot").removeClass( "slotActive" );
-				$( this ).addClass( "slotActive" );
-				// var currentDeviceIndex = $( this ).data( "device-index" );
-				// // console.log("currentDeviceIndex is " + currentDeviceIndex );
-				// port.send({
-				// 	address: "/device",
-				// 	args: [currentDeviceIndex]
-				// });
-
+				$('#devices').append('<button class="deviceSlot" data-slot-name="'+deviceSlot+'" data-slot-index="' + slotIndex + '">'+ deviceSlot +'</button>');
 			});
 
 		});
+
+		$(".deviceSlot").on( "click", function() {
+
+			$(".device").removeClass( "deviceActive" );
+			$(".deviceSlot").removeClass( "slotActive" );
+			$( this ).addClass( "slotActive" );
+
+			var deviceSlotName = $( this ).data( "slot-name" );
+			console.log("deviceSlotName is " + deviceSlotName );
+			port.send({
+				address: "/device-slot",
+				args: [deviceSlotName]
+			});
+
+		});
+
 
 		$(".device").on( "click", function() {
 
@@ -253,7 +253,17 @@ bitwig.parseBundle = function (oscBundle) {
 		// console.log("device2:");
 		// console.log(device2);
 
+	} else if (oscBundle.packets[0].address == "/device-slot/devices"){
+		console.log(oscBundle);
+		var deviceSlotDevices = oscBundle.packets[1].packets;
+		console.log(deviceSlotDevices);
+
+		$.each( deviceSlotDevices, function( index, value ){
+			$(".slotActive").after('<button class="deviceSlotDevice">'+ deviceSlotDevices[index].args[0] +'</button>');			
+		});
+
 	}
+
 
 }
 
