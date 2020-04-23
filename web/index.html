@@ -29,7 +29,7 @@ bitwig.parseMessage = function (oscMessage) {
 	} else if (currentMessage.address == "/track/color"){
 		bitwig.currentTrackColor(currentMessage);
 	} else if (currentMessage.address == "/track/devices"){
-		bitwig.currentTrackDevices(currentMessage);
+		// bitwig.currentTrackDevices(currentMessage);
 	}
 
 }
@@ -96,7 +96,7 @@ bitwig.currentTrackDevices = function (oscMessage) {
 		$("#devices button").removeClass( "deviceActive" );
 		$( this ).addClass( "deviceActive" );
 		var currentDeviceIndex = $( this ).data( "index" );
-		// console.log("bananananannananan" + currentDeviceIndex );
+		// console.log("currentDeviceIndex is " + currentDeviceIndex );
 		port.send({
 			address: "/device",
 			args: [currentDeviceIndex]
@@ -110,10 +110,10 @@ var port = new osc.WebSocketPort({
 	url: localURL
 });
 
-// port.on("message", function (oscMessage) {
-// 	$("#message").text(JSON.stringify(oscMessage, undefined, 2));
-// 	bitwig.parseMessage(oscMessage);
-// });
+port.on("message", function (oscMessage) {
+	// $("#message").text(JSON.stringify(oscMessage, undefined, 2));
+	bitwig.parseMessage(oscMessage);
+});
 
 
 port.on("bundle", function (oscBundle) {
