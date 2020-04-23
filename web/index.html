@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>osc.js Web Socket Demo</title>
+<title>OSC Node.js Bitwig</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,7 +12,7 @@
 <script src="node_modules/jquery/dist/jquery.js"></script>
 <script src="node_modules/osc/dist/osc-browser.min.js"></script>
 <script src="../local-url.js"></script>
-<script src="assets/js/live.js"></script>
+<!-- <script src="assets/js/live.js"></script> -->
 
 <script type="text/javascript">
 
@@ -21,7 +21,9 @@ var bitwig = {};
 bitwig.parseMessage = function (oscMessage) {
 
 	var currentMessage = oscMessage;
-	console.log(">> bitwig.parseMessage");
+	console.log(">> bitwig.parseMessage: " + currentMessage.address);
+	console.log(currentMessage.args);
+
 	if (currentMessage.address == "/track/name"){
 		bitwig.currentTrackName(currentMessage);
 	} else if (currentMessage.address == "/track/color"){
@@ -108,9 +110,82 @@ var port = new osc.WebSocketPort({
 	url: localURL
 });
 
-port.on("message", function (oscMessage) {
-	$("#message").text(JSON.stringify(oscMessage, undefined, 2));
-	bitwig.parseMessage(oscMessage);
+// port.on("message", function (oscMessage) {
+// 	$("#message").text(JSON.stringify(oscMessage, undefined, 2));
+// 	bitwig.parseMessage(oscMessage);
+// });
+
+
+port.on("bundle", function (oscBundle) {
+
+	// $("#message").text(JSON.stringify(oscBundle, null, 2));
+// 	bitwig.parseMessage(oscMessage);
+
+	console.log("bundle received..." + oscBundle.packets[0].address);
+
+	if(oscBundle.packets[0].address == "/track/device/list"){
+		// console.log("inside bundle");
+
+		console.log(oscBundle);
+
+		var trackName = oscBundle.packets[0].args[0];
+		console.log("track name is: " + trackName);
+
+		var devices = oscBundle.packets[1].packets;
+		console.log("devices inside this track:");
+		console.log(devices);
+
+		var device1 = oscBundle.packets[1].packets[0].args[0];
+		console.log("device1:");
+		console.log(device1);
+
+
+		var device1Slot1 = oscBundle.packets[1].packets[0].packets[0].args[0];
+		console.log("device1Slot 1:");
+		console.log(device1Slot1);
+
+		// var device1Slot2 = oscBundle.packets[1].packets[2].args[0];
+		// console.log("device1Slot 2:");
+		// console.log(device1Slot2);
+
+		// var device2 = oscBundle.packets[2].packets[0].args[0];
+		// console.log("device2:");
+		// console.log(device2);
+
+
+		// var device1Slots = oscBundle.packets[1].packets;
+		// console.log(device1Slots);
+
+		// var device2 = oscBundle.packets[2];
+		// console.log(device2);
+		// var device2Slots = oscBundle.packets[3].packets;
+		// console.log(device2Slots);
+
+
+
+
+		// console.log(oscBundle.packets[1].packets.length);
+
+		// console.log("device 1 name is: "+ oscBundle.packets[0].args[0]);
+
+		// console.log("device 2 name is: : "+ oscBundle.packets[2].args[0]);
+
+		// console.log(oscBundle.packets[1].packets.length);
+		// // oscBundle.packets.length;
+
+		// // console.log("device 1 slot 1 is: " + oscBundle.packets[1].packets[0].args[0]);
+		// // console.log("device 1 slot 1 is: " + oscBundle.packets[1].packets[1].args[0]);
+
+		// console.log("device 2 slot 1 is: " + oscBundle.packets[3].packets[0].args[0]);
+		// console.log("device 2 slot 1 is: " + oscBundle.packets[3].packets[1].args[0]);
+
+
+	}
+
+
+
+	// $("#message").text(JSON.stringify(oscMessage, undefined, 2));
+	// bitwig.parseMessage(oscMessage);
 });
 
 port.open();
