@@ -48,6 +48,7 @@ bitwig.currentDeviceSet = function (oscMessage) {
 	var devices = $(".device");
 
 	devices.removeClass( "deviceActive" );
+	$(".deviceSlot").removeClass( "slotActive" );
 	$.each( devices, function( index, value ){
 		if(index == cursorDeviceIndex ){
 			$( this ).addClass( "deviceActive" );
@@ -91,42 +92,43 @@ bitwig.currentTrackColor = function (oscMessage) {
 
 bitwig.currentTrackDevices = function (oscMessage) {
 
-	console.log(">> bitwig.currentTrackDevices");
-	console.log("incoming osc is" + oscMessage.args);
+	// console.log(">> bitwig.currentTrackDevices");
+	// console.log("incoming osc is" + oscMessage.args);
 
-	var cursorDeviceIndex = oscMessage.args[0];
+	// var cursorDeviceIndex = oscMessage.args[0];
 
-	oscMessage.args.splice(0,1);
-	// console.log("after splie" + oscMessage.args);
+	// oscMessage.args.splice(0,1);
+	// // console.log("after splie" + oscMessage.args);
 
-	var currentTrack = oscMessage;
-	// var trackDevice1 = oscMessage.args[0];
-	// $("#currentTrack").text(trackName);
+	// var currentTrack = oscMessage;
+	// // var trackDevice1 = oscMessage.args[0];
+	// // $("#currentTrack").text(trackName);
 
-	$('#devices').html('')
-	$.each( currentTrack.args, function( index, value ){
-		if(index == cursorDeviceIndex ){
-			console.log("inside if...")
-			$('#devices').append('<button data-index="' + index + '"' + ' class="deviceActive"'  + '>'+ value +'</button>');
-		} else {
-			console.log("inside else...")
-			$('#devices').append('<button data-index="' + index + '">'+ value +'</button>');
-		}
+	// $('#devices').html('')
+	// $.each( currentTrack.args, function( index, value ){
+	// 	if(index == cursorDeviceIndex ){
+	// 		console.log("inside if...")
+	// 		$('#devices').append('<button data-device-index="' + index + '"' + ' class="deviceActive"'  + '>'+ value +'</button>');
+	// 	} else {
+	// 		console.log("inside else...")
+	// 		$('#devices').append('<button data-device-index="' + index + '">'+ value +'</button>');
+	// 	}
 
-	});
+	// });
 
-	$("#devices button").on( "click", function() {
+	// $("#devices button").on( "click", function() {
 
-		$("#devices button").removeClass( "deviceActive" );
-		$( this ).addClass( "deviceActive" );
-		var currentDeviceIndex = $( this ).data( "index" );
-		// console.log("currentDeviceIndex is " + currentDeviceIndex );
-		port.send({
-			address: "/device",
-			args: [currentDeviceIndex]
-		});
+	// 	$(".device").removeClass( "deviceActive" );
+	// 	$(".deviceSlot").removeClass( "slotActive" );
+	// 	$( this ).addClass( "deviceActive" );
+	// 	var currentDeviceIndex = $( this ).data( "device-index" );
+	// 	// console.log("currentDeviceIndex is " + currentDeviceIndex );
+	// 	port.send({
+	// 		address: "/device",
+	// 		args: [currentDeviceIndex]
+	// 	});
 
-	});
+	// });
 
 };
 
@@ -162,7 +164,6 @@ bitwig.parseBundle = function (oscBundle) {
 		console.log(strFull);
 		$("#currentTrack").css("background-color", strFull);
 
-
 		var devices = oscBundle.packets[2].packets;
 		console.log("devices inside this track:");
 		console.log(devices);
@@ -175,38 +176,64 @@ bitwig.parseBundle = function (oscBundle) {
 
 		$('#devices').html('')
 		$.each( devices, function( index, value ){
-				console.log("devices array index is:" + index);
-				console.log("devices array value is:");
-				var deviceName = value.packets[0].args[0];
-				console.log(deviceName);
 
-				if(index == currentDeviceIndex ){
-					console.log("inside if...")
+			// console.log("devices array index is:" + index);
+			// console.log("devices array value is:");
+			var deviceName = value.packets[0].args[0];
+			// console.log(deviceName);
 
-					$('#devices').append('<button class="device deviceActive" data-index="' + index + '"' + '>'+ deviceName +'</button>');
-				} else {
-					console.log("inside else...")
+			if(index == currentDeviceIndex ){
+				$('#devices').append('<button class="device deviceActive" data-device-index="' + index + '"' + '>'+ deviceName +'</button>');
+			} else {
+				$('#devices').append('<button class="device" data-device-index="' + index + '">'+ deviceName +'</button>');
+			}
 
-					$('#devices').append('<button class="device" data-index="' + index + '">'+ deviceName +'</button>');
-				}
+			var deviceSlots = value.packets[1].packets;
 
-				var deviceSlots = value.packets[1].packets;
+			// 	console.log("slots array index is:" + slotIndex);
+			// console.log("slots array value is:");
+			// 	var deviceName = value.packets[0].args[0];
+			// console.log(deviceSlots);
 
-				// 	console.log("slots array index is:" + slotIndex);
-					console.log("slots array value is:");
-				// 	var deviceName = value.packets[0].args[0];
-					console.log(deviceSlots);
+			$.each( deviceSlots, function( slotIndex, slotValue ){
 
-					$.each( deviceSlots, function( slotIndex, slotValue ){
+				// console.log("slots array index is:" + slotIndex);
+				// console.log("slots array value is:");
+				var deviceSlot = slotValue.args[0];
+				// console.log(deviceSlot);
 
-						console.log("slots array index is:" + slotIndex);
-						console.log("slots array value is:");
-						var deviceSlot = slotValue.args[0];
-						console.log(deviceSlot);
+				$('#devices').append('<button class="deviceSlot" data-slot-index="' + slotIndex + '">'+ deviceSlot +'</button>');
 
-						$('#devices').append('<button class="deviceSlot" data-index-slot="' + slotIndex + '">'+ deviceSlot +'</button>');
+			});
 
-					});
+
+			$(".deviceSlot").on( "click", function() {
+
+				$(".device").removeClass( "deviceActive" );
+				$(".deviceSlot").removeClass( "slotActive" );
+				$( this ).addClass( "slotActive" );
+				// var currentDeviceIndex = $( this ).data( "device-index" );
+				// // console.log("currentDeviceIndex is " + currentDeviceIndex );
+				// port.send({
+				// 	address: "/device",
+				// 	args: [currentDeviceIndex]
+				// });
+
+			});
+
+		});
+
+		$(".device").on( "click", function() {
+
+			$(".device").removeClass( "deviceActive" );
+			$(".deviceSlot").removeClass( "slotActive" );
+			$( this ).addClass( "deviceActive" );
+			var currentDeviceIndex = $( this ).data( "device-index" );
+			// console.log("currentDeviceIndex is " + currentDeviceIndex );
+			port.send({
+				address: "/device",
+				args: [currentDeviceIndex]
+			});
 
 		});
 
@@ -225,19 +252,6 @@ bitwig.parseBundle = function (oscBundle) {
 		// var device2 = devices[2].packets[0].args[0];
 		// console.log("device2:");
 		// console.log(device2);
-
-		$(".device").on( "click", function() {
-
-			$(".device").removeClass( "deviceActive" );
-			$( this ).addClass( "deviceActive" );
-			var currentDeviceIndex = $( this ).data( "index" );
-			// console.log("currentDeviceIndex is " + currentDeviceIndex );
-			port.send({
-				address: "/device",
-				args: [currentDeviceIndex]
-			});
-
-		});
 
 	}
 
