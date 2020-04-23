@@ -28,13 +28,31 @@ bitwig.parseMessage = function (oscMessage) {
 	console.log(">> bitwig.parseMessage: " + currentMessage.address);
 	console.log(currentMessage.args);
 
-	if (currentMessage.address == "/track/name"){
-		bitwig.currentTrackName(currentMessage);
-	} else if (currentMessage.address == "/track/color"){
-		bitwig.currentTrackColor(currentMessage);
-	} else if (currentMessage.address == "/track/devices"){
-		// bitwig.currentTrackDevices(currentMessage);
+	if (currentMessage.address == "/track/device/current"){
+		bitwig.currentDeviceSet(currentMessage);
+	// } else if (currentMessage.address == "/track/color"){
+	// 	bitwig.currentTrackColor(currentMessage);
+	// } else if (currentMessage.address == "/track/devices"){
+	// 	// bitwig.currentTrackDevices(currentMessage);
 	}
+
+}
+
+bitwig.currentDeviceSet = function (oscMessage) {
+
+	console.log(">> bitwig.currentDeviceSet");
+	console.log("cursorDeviceIndex is: " + oscMessage.args[0]);
+
+	var cursorDeviceIndex = oscMessage.args[0];
+
+	var devices = $(".device");
+
+	devices.removeClass( "deviceActive" );
+	$.each( devices, function( index, value ){
+		if(index == cursorDeviceIndex ){
+			$( this ).addClass( "deviceActive" );
+		} 
+	});
 
 }
 
@@ -88,8 +106,10 @@ bitwig.currentTrackDevices = function (oscMessage) {
 	$('#devices').html('')
 	$.each( currentTrack.args, function( index, value ){
 		if(index == cursorDeviceIndex ){
+			console.log("inside if...")
 			$('#devices').append('<button data-index="' + index + '"' + ' class="deviceActive"'  + '>'+ value +'</button>');
 		} else {
+			console.log("inside else...")
 			$('#devices').append('<button data-index="' + index + '">'+ value +'</button>');
 		}
 
@@ -110,10 +130,10 @@ bitwig.currentTrackDevices = function (oscMessage) {
 
 };
 
-// port.on("message", function (oscMessage) {
-// 	// $("#message").text(JSON.stringify(oscMessage, undefined, 2));
-// 	bitwig.parseMessage(oscMessage);
-// });
+port.on("message", function (oscMessage) {
+	// $("#message").text(JSON.stringify(oscMessage, undefined, 2));
+	bitwig.parseMessage(oscMessage);
+});
 
 
 bitwig.parseBundle = function (oscBundle) {
@@ -161,8 +181,12 @@ bitwig.parseBundle = function (oscBundle) {
 				console.log(deviceName);
 
 				if(index == currentDeviceIndex ){
-					$('#devices').append('<button class="device" data-index="' + index + '"' + ' class="deviceActive"'  + '>'+ deviceName +'</button>');
+					console.log("inside if...")
+
+					$('#devices').append('<button class="device deviceActive" data-index="' + index + '"' + '>'+ deviceName +'</button>');
 				} else {
+					console.log("inside else...")
+
 					$('#devices').append('<button class="device" data-index="' + index + '">'+ deviceName +'</button>');
 				}
 
@@ -180,36 +204,42 @@ bitwig.parseBundle = function (oscBundle) {
 						var deviceSlot = slotValue.args[0];
 						console.log(deviceSlot);
 
-						$('#devices').append('<button class="deviceSlot" data-index="' + index + '">'+ deviceSlot +'</button>');
+						$('#devices').append('<button class="deviceSlot" data-index-slot="' + slotIndex + '">'+ deviceSlot +'</button>');
 
 					});
 
-				
+		});
 
+		// var device1 = devices[1].packets[0].args[0];
+		// console.log("device1:");
+		// console.log(device1);
 
+		// console.log("device1Slot 1:");
+		// var device1Slot1 = devices[1].packets[1].packets[0].args[0];
+		// console.log(device1Slot1);
+
+		// console.log("device1Slot 2:");
+		// var device1Slot2 = devices[1].packets[1].packets[1].args[0];
+		// console.log(device1Slot2);
+
+		// var device2 = devices[2].packets[0].args[0];
+		// console.log("device2:");
+		// console.log(device2);
+
+		$(".device").on( "click", function() {
+
+			$(".device").removeClass( "deviceActive" );
+			$( this ).addClass( "deviceActive" );
+			var currentDeviceIndex = $( this ).data( "index" );
+			// console.log("currentDeviceIndex is " + currentDeviceIndex );
+			port.send({
+				address: "/device",
+				args: [currentDeviceIndex]
+			});
 
 		});
 
-
-
-		var device1 = devices[1].packets[0].args[0];
-		console.log("device1:");
-		console.log(device1);
-
-		console.log("device1Slot 1:");
-		var device1Slot1 = devices[1].packets[1].packets[0].args[0];
-		console.log(device1Slot1);
-
-		console.log("device1Slot 2:");
-		var device1Slot2 = devices[1].packets[1].packets[1].args[0];
-		console.log(device1Slot2);
-
-		var device2 = devices[2].packets[0].args[0];
-		console.log("device2:");
-		console.log(device2);
-
 	}
-
 
 }
 

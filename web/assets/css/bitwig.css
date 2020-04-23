@@ -74,6 +74,7 @@ body {
 	background-color: #fd7d28;
 	text-align: center;
 	color:#fff;
+	border-right: 1px solid #2e2e2e;
 }
 #devices button.device {
 	float:left;
@@ -81,13 +82,14 @@ body {
 }
 
 #devices button.deviceSlot {
-	background-color: red;
+	background-color: #426a7f;
 	float:left;
 	width:104px;
 }
 
 #devices button.deviceActive {
-	background-color: #444;
+	background-image: linear-gradient(120deg, #fd7d28 2.63%, #444444 2.63%, #444444 50%, #fd7d28 50%, #fd7d28 52.63%, #444444 52.63%, #444444 100%);
+	background-size: 21.94px 38.00px;
 }
 
 #devices button:active {
@@ -95,7 +97,7 @@ body {
 }
 
 #devices button:nth-child(odd) {
-	border-right: 1px solid #2e2e2e;
+/*	border-right: 1px solid #2e2e2e;*/
 }
 
 #butSend {
