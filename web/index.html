@@ -135,14 +135,18 @@ port.on("bundle", function (oscBundle) {
 		console.log("devices inside this track:");
 		console.log(devices);
 
-		var device1 = oscBundle.packets[1].packets[0].args[0];
+		var device1 = devices[0].packets[0].args[0];
 		console.log("device1:");
 		console.log(device1);
 
+		var device2 = devices[1].packets[0].args[0];
+		console.log("device2:");
+		console.log(device2);
 
-		var device1Slot1 = oscBundle.packets[1].packets[0].packets[0].args[0];
-		console.log("device1Slot 1:");
-		console.log(device1Slot1);
+
+		// var device1Slot1 = oscBundle.packets[1].packets[0].packets[0].args[0];
+		// console.log("device1Slot 1:");
+		// console.log(device1Slot1);
 
 		// var device1Slot2 = oscBundle.packets[1].packets[2].args[0];
 		// console.log("device1Slot 2:");
