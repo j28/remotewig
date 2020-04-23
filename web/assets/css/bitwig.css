@@ -75,6 +75,16 @@ body {
 	text-align: center;
 	color:#fff;
 }
+#devices button.device {
+	float:left;
+	clear:left;
+}
+
+#devices button.deviceSlot {
+	background-color: red;
+	float:left;
+	width:104px;
+}
 
 #devices button.deviceActive {
 	background-color: #444;
@@ -86,7 +96,6 @@ body {
 
 #devices button:nth-child(odd) {
 	border-right: 1px solid #2e2e2e;
-	width:207px;
 }
 
 #butSend {

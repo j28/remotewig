@@ -16,6 +16,10 @@
 
 <script type="text/javascript">
 
+var port = new osc.WebSocketPort({
+	url: localURL
+});
+
 var bitwig = {};
 
 bitwig.parseMessage = function (oscMessage) {
@@ -106,53 +110,112 @@ bitwig.currentTrackDevices = function (oscMessage) {
 
 };
 
-var port = new osc.WebSocketPort({
-	url: localURL
-});
-
-port.on("message", function (oscMessage) {
-	// $("#message").text(JSON.stringify(oscMessage, undefined, 2));
-	bitwig.parseMessage(oscMessage);
-});
-
-
-port.on("bundle", function (oscBundle) {
-
-
+// port.on("message", function (oscMessage) {
+// 	// $("#message").text(JSON.stringify(oscMessage, undefined, 2));
 // 	bitwig.parseMessage(oscMessage);
+// });
+
+
+bitwig.parseBundle = function (oscBundle) {
 
 	console.log("bundle received..." + oscBundle.packets[0].address);
 
-	if(oscBundle.packets[0].address == "/track/device/list"){
+	if(oscBundle.packets[0].address == "/track"){
 
-	$("#message").text(JSON.stringify(oscBundle, null, 2));
+		$("#message").text(JSON.stringify(oscBundle, null, 2));
 
 		console.log(oscBundle);
 
 		var trackName = oscBundle.packets[0].args[0];
 		console.log("track name is: " + trackName);
+		$("#currentTrack").text(trackName);
 
-		var devices = oscBundle.packets[1].packets;
+		var trackColor = oscBundle.packets[1];
+		console.log("track color is: " + trackColor);
+		var trackRed = trackColor.args[0];
+		var trackGreen = trackColor.args[1];
+		var trackBlue = trackColor.args[2];
+		var strBegin = "rgb(";
+		var strComma = ", ";
+		var strEnd = ")";
+		var strFull = strBegin.concat(trackRed, strComma, trackGreen, strComma, trackBlue, strEnd);
+		console.log(strFull);
+		$("#currentTrack").css("background-color", strFull);
+
+
+		var devices = oscBundle.packets[2].packets;
 		console.log("devices inside this track:");
 		console.log(devices);
 
-		var device1 = devices[0].packets[0].args[0];
+		var currentDeviceIndex = devices[0].args[0];
+		console.log("current device index is:");
+		console.log(currentDeviceIndex);
+
+		devices.splice(0,1);
+
+		$('#devices').html('')
+		$.each( devices, function( index, value ){
+				console.log("devices array index is:" + index);
+				console.log("devices array value is:");
+				var deviceName = value.packets[0].args[0];
+				console.log(deviceName);
+
+				if(index == currentDeviceIndex ){
+					$('#devices').append('<button class="device" data-index="' + index + '"' + ' class="deviceActive"'  + '>'+ deviceName +'</button>');
+				} else {
+					$('#devices').append('<button class="device" data-index="' + index + '">'+ deviceName +'</button>');
+				}
+
+				var deviceSlots = value.packets[1].packets;
+
+				// 	console.log("slots array index is:" + slotIndex);
+					console.log("slots array value is:");
+				// 	var deviceName = value.packets[0].args[0];
+					console.log(deviceSlots);
+
+					$.each( deviceSlots, function( slotIndex, slotValue ){
+
+						console.log("slots array index is:" + slotIndex);
+						console.log("slots array value is:");
+						var deviceSlot = slotValue.args[0];
+						console.log(deviceSlot);
+
+						$('#devices').append('<button class="deviceSlot" data-index="' + index + '">'+ deviceSlot +'</button>');
+
+					});
+
+				
+
+
+
+		});
+
+
+
+		var device1 = devices[1].packets[0].args[0];
 		console.log("device1:");
 		console.log(device1);
 
 		console.log("device1Slot 1:");
-		var device1Slot1 = devices[0].packets[1].packets[0].args[0];
+		var device1Slot1 = devices[1].packets[1].packets[0].args[0];
 		console.log(device1Slot1);
 
 		console.log("device1Slot 2:");
-		var device1Slot2 = devices[0].packets[1].packets[1].args[0];
+		var device1Slot2 = devices[1].packets[1].packets[1].args[0];
 		console.log(device1Slot2);
 
-		var device2 = devices[1].packets[0].args[0];
+		var device2 = devices[2].packets[0].args[0];
 		console.log("device2:");
 		console.log(device2);
 
 	}
+
+
+}
+
+port.on("bundle", function (oscBundle) {
+
+	bitwig.parseBundle(oscBundle);
 
 	// $("#message").text(JSON.stringify(oscMessage, undefined, 2));
 	// bitwig.parseMessage(oscMessage);
