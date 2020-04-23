@@ -118,13 +118,14 @@ var port = new osc.WebSocketPort({
 
 port.on("bundle", function (oscBundle) {
 
-	// $("#message").text(JSON.stringify(oscBundle, null, 2));
+
 // 	bitwig.parseMessage(oscMessage);
 
 	console.log("bundle received..." + oscBundle.packets[0].address);
 
 	if(oscBundle.packets[0].address == "/track/device/list"){
-		// console.log("inside bundle");
+
+	$("#message").text(JSON.stringify(oscBundle, null, 2));
 
 		console.log(oscBundle);
 
@@ -139,54 +140,19 @@ port.on("bundle", function (oscBundle) {
 		console.log("device1:");
 		console.log(device1);
 
+		console.log("device1Slot 1:");
+		var device1Slot1 = devices[0].packets[1].packets[0].args[0];
+		console.log(device1Slot1);
+
+		console.log("device1Slot 2:");
+		var device1Slot2 = devices[0].packets[1].packets[1].args[0];
+		console.log(device1Slot2);
+
 		var device2 = devices[1].packets[0].args[0];
 		console.log("device2:");
 		console.log(device2);
 
-
-		// var device1Slot1 = oscBundle.packets[1].packets[0].packets[0].args[0];
-		// console.log("device1Slot 1:");
-		// console.log(device1Slot1);
-
-		// var device1Slot2 = oscBundle.packets[1].packets[2].args[0];
-		// console.log("device1Slot 2:");
-		// console.log(device1Slot2);
-
-		// var device2 = oscBundle.packets[2].packets[0].args[0];
-		// console.log("device2:");
-		// console.log(device2);
-
-
-		// var device1Slots = oscBundle.packets[1].packets;
-		// console.log(device1Slots);
-
-		// var device2 = oscBundle.packets[2];
-		// console.log(device2);
-		// var device2Slots = oscBundle.packets[3].packets;
-		// console.log(device2Slots);
-
-
-
-
-		// console.log(oscBundle.packets[1].packets.length);
-
-		// console.log("device 1 name is: "+ oscBundle.packets[0].args[0]);
-
-		// console.log("device 2 name is: : "+ oscBundle.packets[2].args[0]);
-
-		// console.log(oscBundle.packets[1].packets.length);
-		// // oscBundle.packets.length;
-
-		// // console.log("device 1 slot 1 is: " + oscBundle.packets[1].packets[0].args[0]);
-		// // console.log("device 1 slot 1 is: " + oscBundle.packets[1].packets[1].args[0]);
-
-		// console.log("device 2 slot 1 is: " + oscBundle.packets[3].packets[0].args[0]);
-		// console.log("device 2 slot 1 is: " + oscBundle.packets[3].packets[1].args[0]);
-
-
 	}
-
-
 
 	// $("#message").text(JSON.stringify(oscMessage, undefined, 2));
 	// bitwig.parseMessage(oscMessage);
