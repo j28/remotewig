@@ -16,6 +16,14 @@
 
 <script type="text/javascript">
 
+// on ready
+$(function() {
+	if (window.navigator.standalone) {
+		document.getElementById("messageArea").style.display = "none";
+	}
+});
+
+
 var port = new osc.WebSocketPort({
 	url: localURL
 });
@@ -274,9 +282,10 @@ var sendManual = function () {
 
 <div id="messageArea">
 	<pre id="message">Select a track</pre>
+	<button id="butSend" onclick="sendManual()">Send OSC message</button>
 </div>
 
-<button id="butSend" onclick="sendManual()">Send OSC message</button>
+
 
 </body>
 </html>
