@@ -24,11 +24,8 @@ var bitwig = {};
 
 bitwig.localState = [];
 
-bitwig.localState[0] = 0;
-bitwig.localState[1] = 1;
-bitwig.localState[2] = 1;
-bitwig.localState[3] = 1;
-
+bitwig.localState[2] = -1;
+bitwig.localState[3] = -1;
 
 bitwig.parseMessage = function (oscMessage) {
 
@@ -114,17 +111,20 @@ bitwig.parseBundle = function (oscBundle) {
 
 	console.log("bundle received..." + oscBundle.packets[0].address);
 
-	if(oscBundle.packets[0].address == "/track"){
+	if(oscBundle.packets[0].address == "/track/position"){
 
 		$("#message").text(JSON.stringify(oscBundle, null, 2));
 
 		console.log(oscBundle);
 
-		var trackName = oscBundle.packets[0].args[0];
+		var trackPosition = oscBundle.packets[0].args[0];
+		bitwig.localState[0] = trackPosition;
+
+		var trackName = oscBundle.packets[1].args[0];
 		console.log("track name is: " + trackName);
 		$("#currentTrack").text(trackName);
 
-		var trackColor = oscBundle.packets[1];
+		var trackColor = oscBundle.packets[2];
 		console.log("track color is: " + trackColor);
 		var trackRed = trackColor.args[0];
 		var trackGreen = trackColor.args[1];
@@ -136,25 +136,23 @@ bitwig.parseBundle = function (oscBundle) {
 		console.log(strFull);
 		$("#currentTrack").css("background-color", strFull);
 
-		var devices = oscBundle.packets[2].packets;
+		var devices = oscBundle.packets[3].packets;
 		console.log("devices inside this track:");
 		console.log(devices);
 
-		var currentDeviceIndex = devices[0].args[0];
-		console.log("current device index is:");
-		console.log(currentDeviceIndex);
+		// var currentDeviceIndex = devices[0].args[0];
+		// console.log("current device index is:");
+		// console.log(currentDeviceIndex);
 
-		devices.splice(0,1);
+		// devices.splice(0,1);
 
 		$('#devices').html('')
 		$.each( devices, function( index, value ){
 
-			// console.log("devices array index is:" + index);
-			// console.log("devices array value is:");
 			var deviceName = value.packets[0].args[0];
-			// console.log(deviceName);
+			var isActive = value.packets[0].args[1];
 
-			if(index == currentDeviceIndex ){
+			if(isActive == true ){
 				$('#devices').append('<button class="device deviceActive" data-device-index="' + index + '"' + '>'+ deviceName +'</button>');
 			} else {
 				$('#devices').append('<button class="device" data-device-index="' + index + '">'+ deviceName +'</button>');
@@ -162,10 +160,10 @@ bitwig.parseBundle = function (oscBundle) {
 
 			var deviceSlots = value.packets[1].packets;
 
-			// 	console.log("slots array index is:" + slotIndex);
-			// console.log("slots array value is:");
-			// 	var deviceName = value.packets[0].args[0];
-			// console.log(deviceSlots);
+			console.log("device slots:");
+			console.log(deviceSlots);
+			var deviceName = value.packets[0].args[0];
+			console.log(deviceSlots);
 
 			$.each( deviceSlots, function( slotIndex, slotValue ){
 
@@ -174,7 +172,7 @@ bitwig.parseBundle = function (oscBundle) {
 				var deviceSlot = slotValue.args[0];
 				// console.log(deviceSlot);
 
-				$('#devices').append('<button class="deviceSlot" data-slot-name="'+deviceSlot+'" data-slot-index="' + slotIndex + '">'+ deviceSlot +'</button>');
+				$('#devices').append('<button class="deviceSlot" data-slot-name="'+deviceSlot+'" data-slot-index="' + slotIndex + '" data-parent-device-index="' + index + '">'+ deviceSlot +'</button>');
 			});
 
 		});
@@ -186,9 +184,13 @@ bitwig.parseBundle = function (oscBundle) {
 			$(".device").removeClass( "deviceActive" );
 			$(".deviceSlot").removeClass( "slotActive" );
 			$( this ).addClass( "deviceActive" );
-			var currentDeviceIndex = $( this ).data( "device-index" );
+			bitwig.localState[1] = $( this ).data( "device-index" );
 
-			// console.log("currentDeviceIndex is " + currentDeviceIndex );
+			console.log("bitwig.localState prior to osc send" );
+			console.log(bitwig.localState[0]);
+			console.log(bitwig.localState[1]);
+			console.log(bitwig.localState[2]);
+			console.log(bitwig.localState[3]);
 			port.send({
 				address: "/track",
 				args: bitwig.localState
@@ -202,9 +204,18 @@ bitwig.parseBundle = function (oscBundle) {
 			$(".device").removeClass( "deviceActive" );
 			$(".deviceSlot").removeClass( "slotActive" );
 			$( this ).addClass( "slotActive" );
+			var deviceSlotIndex = $( this ).data( "slot-index" );
+			var parentDeviceIndex = $( this ).data( "parent-device-index" );
 
-			var deviceSlotName = $( this ).data( "slot-name" );
-			console.log("deviceSlotName is " + deviceSlotName );
+			bitwig.localState[1] = parentDeviceIndex;
+			bitwig.localState[2] = deviceSlotIndex;
+
+			console.log(bitwig.localState[0]);
+			console.log(bitwig.localState[1]);
+			console.log(bitwig.localState[2]);
+			console.log(bitwig.localState[3]);
+
+			// console.log("deviceSlotName is " + deviceSlotName );
 			port.send({
 				address: "/track",
 				args: bitwig.localState
