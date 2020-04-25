@@ -22,6 +22,14 @@ var port = new osc.WebSocketPort({
 
 var bitwig = {};
 
+bitwig.localState = [];
+
+bitwig.localState[0] = 0;
+bitwig.localState[1] = 1;
+bitwig.localState[2] = 1;
+bitwig.localState[3] = 1;
+
+
 bitwig.parseMessage = function (oscMessage) {
 
 	var currentMessage = oscMessage;
@@ -92,43 +100,7 @@ bitwig.currentTrackColor = function (oscMessage) {
 
 bitwig.currentTrackDevices = function (oscMessage) {
 
-	// console.log(">> bitwig.currentTrackDevices");
-	// console.log("incoming osc is" + oscMessage.args);
 
-	// var cursorDeviceIndex = oscMessage.args[0];
-
-	// oscMessage.args.splice(0,1);
-	// // console.log("after splie" + oscMessage.args);
-
-	// var currentTrack = oscMessage;
-	// // var trackDevice1 = oscMessage.args[0];
-	// // $("#currentTrack").text(trackName);
-
-	// $('#devices').html('')
-	// $.each( currentTrack.args, function( index, value ){
-	// 	if(index == cursorDeviceIndex ){
-	// 		console.log("inside if...")
-	// 		$('#devices').append('<button data-device-index="' + index + '"' + ' class="deviceActive"'  + '>'+ value +'</button>');
-	// 	} else {
-	// 		console.log("inside else...")
-	// 		$('#devices').append('<button data-device-index="' + index + '">'+ value +'</button>');
-	// 	}
-
-	// });
-
-	// $("#devices button").on( "click", function() {
-
-	// 	$(".device").removeClass( "deviceActive" );
-	// 	$(".deviceSlot").removeClass( "slotActive" );
-	// 	$( this ).addClass( "deviceActive" );
-	// 	var currentDeviceIndex = $( this ).data( "device-index" );
-	// 	// console.log("currentDeviceIndex is " + currentDeviceIndex );
-	// 	port.send({
-	// 		address: "/device",
-	// 		args: [currentDeviceIndex]
-	// 	});
-
-	// });
 
 };
 
@@ -207,6 +179,24 @@ bitwig.parseBundle = function (oscBundle) {
 
 		});
 
+
+
+		$(".device").on( "click", function() {
+
+			$(".device").removeClass( "deviceActive" );
+			$(".deviceSlot").removeClass( "slotActive" );
+			$( this ).addClass( "deviceActive" );
+			var currentDeviceIndex = $( this ).data( "device-index" );
+
+			// console.log("currentDeviceIndex is " + currentDeviceIndex );
+			port.send({
+				address: "/track",
+				args: bitwig.localState
+			});
+
+		});
+
+
 		$(".deviceSlot").on( "click", function() {
 
 			$(".device").removeClass( "deviceActive" );
@@ -216,42 +206,12 @@ bitwig.parseBundle = function (oscBundle) {
 			var deviceSlotName = $( this ).data( "slot-name" );
 			console.log("deviceSlotName is " + deviceSlotName );
 			port.send({
-				address: "/device-slot",
-				args: [deviceSlotName]
+				address: "/track",
+				args: bitwig.localState
 			});
 
 		});
 
-
-		$(".device").on( "click", function() {
-
-			$(".device").removeClass( "deviceActive" );
-			$(".deviceSlot").removeClass( "slotActive" );
-			$( this ).addClass( "deviceActive" );
-			var currentDeviceIndex = $( this ).data( "device-index" );
-			// console.log("currentDeviceIndex is " + currentDeviceIndex );
-			port.send({
-				address: "/device",
-				args: [currentDeviceIndex]
-			});
-
-		});
-
-		// var device1 = devices[1].packets[0].args[0];
-		// console.log("device1:");
-		// console.log(device1);
-
-		// console.log("device1Slot 1:");
-		// var device1Slot1 = devices[1].packets[1].packets[0].args[0];
-		// console.log(device1Slot1);
-
-		// console.log("device1Slot 2:");
-		// var device1Slot2 = devices[1].packets[1].packets[1].args[0];
-		// console.log(device1Slot2);
-
-		// var device2 = devices[2].packets[0].args[0];
-		// console.log("device2:");
-		// console.log(device2);
 
 	} else if (oscBundle.packets[0].address == "/device-slot/devices"){
 		console.log(oscBundle);
@@ -277,10 +237,10 @@ port.on("bundle", function (oscBundle) {
 
 port.open();
 
-var sendTest = function () {
+var sendManual = function () {
 	port.send({
 		address: "/track",
-		args: [1]
+		args: bitwig.localState
 	});
 };
 
@@ -300,7 +260,7 @@ var sendTest = function () {
 	<pre id="message">Select a track</pre>
 </div>
 
-<button id="butSend" onclick="sendTest()">Send OSC message</button>
+<button id="butSend" onclick="sendManual()">Send OSC message</button>
 
 </body>
 </html>
