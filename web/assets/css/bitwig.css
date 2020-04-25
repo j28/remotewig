@@ -97,6 +97,13 @@ body {
 	background-size: 21.94px 38.00px;
 }
 
+#devices button.slotDeviceActive {
+	background-image: linear-gradient(120deg, #426a7f 2.63%, #444444 2.63%, #444444 50%, #426a7f 50%, #426a7f 52.63%, #444444 52.63%, #444444 100%);
+	background-size: 21.94px 38.00px;
+}
+
+
+
 #devices button.deviceSlotDevice {
 	float:left;
 	background-color: #999;
