@@ -17,7 +17,8 @@
 <script type="text/javascript">
 
 // on ready
-$(function() {
+
+document.addEventListener("DOMContentLoaded", function(){
 	if (window.navigator.standalone) {
 		document.getElementById("messageArea").style.display = "none";
 	}
@@ -54,7 +55,8 @@ bitwig.currentTrackName = function (oscMessage) {
 
 	var currentTrack = oscMessage;
 	var trackName = oscMessage.args[0];
-	$("#currentTrack").text(trackName);
+	var currentTrackEl = document.querySelector("#currentTrack");
+	currentTrackEl.textContent = trackName;
 
 }
 
@@ -76,7 +78,8 @@ bitwig.currentTrackColor = function (oscMessage) {
 	var strFull = strBegin.concat(trackRed, strComma, trackGreen, strComma, trackBlue, strEnd);
 	console.log(strFull);
 
-	$("#currentTrack").css("background-color", strFull);
+	var currentTrackEl = document.querySelector("#currentTrack");
+	currentTrackEl.style.backgroundColor = strFull;
 
 }
 
@@ -91,7 +94,7 @@ bitwig.parseBundle = function (oscBundle) {
 
 	if(oscBundle.packets[0].address == "/track/position"){
 
-		$("#message").text(JSON.stringify(oscBundle, null, 2));
+		// $("#message").text(JSON.stringify(oscBundle, null, 2));
 
 		console.log(oscBundle);
 
@@ -100,7 +103,8 @@ bitwig.parseBundle = function (oscBundle) {
 
 		var trackName = oscBundle.packets[1].args[0];
 		console.log("track name is: " + trackName);
-		$("#currentTrack").text(trackName);
+		var currentTrackEl = document.querySelector("#currentTrack");
+		currentTrackEl.textContent = trackName;
 
 		var trackColor = oscBundle.packets[2];
 		console.log("track color is: " + trackColor);
@@ -112,7 +116,7 @@ bitwig.parseBundle = function (oscBundle) {
 		var strEnd = ")";
 		var strFull = strBegin.concat(trackRed, strComma, trackGreen, strComma, trackBlue, strEnd);
 		console.log(strFull);
-		$("#currentTrack").css("background-color", strFull);
+		currentTrackEl.style.backgroundColor = strFull;
 
 		var devices = oscBundle.packets[3].packets;
 		console.log("devices inside this track:");
