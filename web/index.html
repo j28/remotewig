@@ -128,16 +128,44 @@ bitwig.parseBundle = function (oscBundle) {
 
 		// devices.splice(0,1);
 
-		$('#devices').html('')
-		$.each( devices, function( index, value ){
+		var devicesEl = document.querySelector("#devices");
 
-			var deviceName = value.packets[0].args[0];
+
+		devicesEl.innerHTML = '';
+
+		devices.forEach(function (value, index) {
+
+			const testDevice = {
+				name: value.packets[0].args[0],
+				testIndex: index
+			}
+
+			const markupActive = `
+			<div>
+				<button class="device deviceActive" data-device-index="${testDevice.testIndex}">
+					${testDevice.name}
+				</button>
+				<span></span>
+			</div>
+			`;
+
+			const markup = `
+			<div>
+				<button class="device" data-device-index="${testDevice.testIndex}">
+					${testDevice.name}
+				</button>
+				<span></span>
+			</div>
+			`;
+
+			// var devicesEl = document.querySelector("#devices");
+			// var deviceName = value.packets[0].args[0];
 			var isActive = value.packets[0].args[1];
 
 			if(isActive == true ){
-				$('#devices').append('<div><button class="device deviceActive" data-device-index="' + index + '"' + '>'+ deviceName +'</button><span></span></div>');
+				devicesEl.insertAdjacentHTML("beforeend", markupActive);
 			} else {
-				$('#devices').append('<div><button class="device" data-device-index="' + index + '">'+ deviceName +'</button><span></span></div>');
+				devicesEl.insertAdjacentHTML("beforeend", markup);
 			}
 
 			var deviceSlots = value.packets[1].packets;
@@ -147,7 +175,7 @@ bitwig.parseBundle = function (oscBundle) {
 			var deviceName = value.packets[0].args[0];
 			console.log(deviceSlots);
 
-			$.each( deviceSlots, function( slotIndex, slotValue ){
+			deviceSlots.forEach(function (slotValue, slotIndex) {
 				var selectorString = "#devices div:eq(" +index +") span";
 
 				console.log("selectorString:" + selectorString);
@@ -159,13 +187,17 @@ bitwig.parseBundle = function (oscBundle) {
 
 				$(selectorString).append('<button class="deviceSlot" data-slot-name="'+deviceSlot+'" data-slot-index="' + slotIndex + '" data-parent-device-index="' + index + '">'+ deviceSlot +'</button>');
 			});
-
 		});
+
 
 		$(".device").on( "click", function() {
 
-			$(".device").removeClass( "deviceActive" );
-			$(".deviceSlot").removeClass( "slotActive" );
+			document.querySelectorAll('.device').forEach(item => {
+				item.classList.remove("deviceActive");
+			});
+			document.querySelectorAll('.deviceSlot').forEach(item => {
+				item.classList.remove("slotActive");
+			});
 			$( this ).addClass( "deviceActive" );
 			bitwig.localState[1] = $( this ).data( "device-index" );
 
@@ -187,8 +219,12 @@ bitwig.parseBundle = function (oscBundle) {
 
 		$(".deviceSlot").on( "click", function() {
 
-			$(".device").removeClass( "deviceActive" );
-			$(".deviceSlot").removeClass( "slotActive" );
+			document.querySelectorAll('.device').forEach(item => {
+				item.classList.remove("deviceActive");
+			});
+			document.querySelectorAll('.deviceSlot').forEach(item => {
+				item.classList.remove("slotActive");
+			});
 			$( this ).addClass( "slotActive" );
 			var deviceSlotIndex = $( this ).data( "slot-index" );
 			var parentDeviceIndex = $( this ).data( "parent-device-index" );
@@ -218,7 +254,9 @@ bitwig.parseBundle = function (oscBundle) {
 		console.log(deviceSlotDevices);
 
 		$(".deviceSlotDevice").remove();
-		$.each( deviceSlotDevices, function( index, value ){
+
+		deviceSlotDevices.forEach(function (value, index) {
+
 			var isActive = deviceSlotDevices[index].args[1];
 
 			if(isActive == true ){
@@ -288,8 +326,6 @@ var sendManual = function () {
 	<pre id="message">Select a track</pre>
 	<button id="butSend" onclick="sendManual()">Send OSC message</button>
 </div>
-
-
 
 </body>
 </html>
