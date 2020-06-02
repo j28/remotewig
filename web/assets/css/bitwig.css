@@ -10,13 +10,13 @@ body {
 }
 
 @font-face {
-  font-family: Poppins;
-  src: url(../fonts/poppins/Poppins-Regular.otf);
+	font-family: Poppins;
+	src: url(../fonts/poppins/Poppins-Regular.otf);
 }
 
 @font-face {
-  font-family: Poppins;
-  src: url(../fonts/poppins/Poppins-SemiBold.otf);
+	font-family: Poppins;
+	src: url(../fonts/poppins/Poppins-SemiBold.otf);
 	font-weight: 800;
 }
 
