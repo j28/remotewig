@@ -6,24 +6,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/images/bitwig-192.png">
-
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" type="text/css" media="all" href="assets/css/bitwig.css"></link>
-<script src="node_modules/jquery/dist/jquery.js"></script>
 <script src="node_modules/osc/dist/osc-browser.min.js"></script>
 <script src="../local-url.js"></script>
 <!-- <script src="assets/js/live.js"></script> -->
 
 <script type="text/javascript">
 
-// on ready
-
 document.addEventListener("DOMContentLoaded", function(){
 	if (window.navigator.standalone) {
 		document.getElementById("messageArea").style.display = "none";
 	}
 });
-
 
 var port = new osc.WebSocketPort({
 	url: localURL
@@ -129,121 +124,118 @@ bitwig.parseBundle = function (oscBundle) {
 		// devices.splice(0,1);
 
 		var devicesEl = document.querySelector("#devices");
-
-
 		devicesEl.innerHTML = '';
 
 		devices.forEach(function (value, index) {
 
-			const testDevice = {
-				name: value.packets[0].args[0],
-				testIndex: index
-			}
-
-			const markupActive = `
-			<div>
-				<button class="device deviceActive" data-device-index="${testDevice.testIndex}">
-					${testDevice.name}
-				</button>
-				<span></span>
-			</div>
-			`;
-
-			const markup = `
-			<div>
-				<button class="device" data-device-index="${testDevice.testIndex}">
-					${testDevice.name}
-				</button>
-				<span></span>
-			</div>
-			`;
-
-			// var devicesEl = document.querySelector("#devices");
-			// var deviceName = value.packets[0].args[0];
 			var isActive = value.packets[0].args[1];
 
-			if(isActive == true ){
-				devicesEl.insertAdjacentHTML("beforeend", markupActive);
-			} else {
-				devicesEl.insertAdjacentHTML("beforeend", markup);
+			const device = {
+				name: value.packets[0].args[0],
+				index: index
 			}
 
+			const markupDevice = `
+			<div>
+				<button class="device${isActive ? ' deviceActive' : ''}" data-device-index="${device.index}">
+					${device.name}
+				</button>
+				<span></span>
+			</div>
+			`;
+
+			devicesEl.insertAdjacentHTML("beforeend", markupDevice);
 			var deviceSlots = value.packets[1].packets;
 
-			console.log("device slots:");
-			console.log(deviceSlots);
+			// console.log("device slots:");
+			// console.log(deviceSlots);
 			var deviceName = value.packets[0].args[0];
-			console.log(deviceSlots);
+			// console.log(deviceSlots);
 
 			deviceSlots.forEach(function (slotValue, slotIndex) {
-				var selectorString = "#devices div:eq(" +index +") span";
 
-				console.log("selectorString:" + selectorString);
+				var nthChild = index + 1;
+				var selectorString = "#devices div:nth-child(" +nthChild +") span";
+				// console.log("selectorString:" + selectorString);
+				var selectorTest = document.querySelector(selectorString);
+				// console.log("selectorTest.....: " + selectorTest.childElementCount);
 
-				console.log("slots array index is:" + slotIndex);
-				// console.log("slots array value is:");
-				var deviceSlot = slotValue.args[0];
-				// console.log(deviceSlot);
+				const slot = {
+					deviceSlot: slotValue.args[0],
+					slotIndex: slotIndex,
+					index: index
+				}
 
-				$(selectorString).append('<button class="deviceSlot" data-slot-name="'+deviceSlot+'" data-slot-index="' + slotIndex + '" data-parent-device-index="' + index + '">'+ deviceSlot +'</button>');
+				const markupDeviceSlot = `
+				<button class="deviceSlot" data-slot-name="${slot.deviceSlot}" data-slot-index="${slot.slotIndex}" data-parent-device-index="${slot.index}">
+					${slot.deviceSlot}
+				</button>
+				`;
+
+				selectorTest.insertAdjacentHTML("beforeend", markupDeviceSlot);
+
 			});
 		});
 
+		document.querySelectorAll('.device').forEach(item => {
+			item.addEventListener('click', event => {
 
-		$(".device").on( "click", function() {
+				document.querySelectorAll('.device').forEach(item => {
+					item.classList.remove("deviceActive");
+				});
+				document.querySelectorAll('.deviceSlot').forEach(item => {
+					item.classList.remove("slotActive");
+				});
+				event.target.classList.add("deviceActive");
 
-			document.querySelectorAll('.device').forEach(item => {
-				item.classList.remove("deviceActive");
+				bitwig.localState[1] = parseInt(event.target.getAttribute("data-device-index"));
+				bitwig.localState[2] = -1;
+				bitwig.localState[3] = -1;
+
+				console.log("bitwig.localState prior to osc send" );
+				console.log(bitwig.localState[0]);
+				console.log(bitwig.localState[1]);
+				console.log(bitwig.localState[2]);
+				console.log(bitwig.localState[3]);
+				port.send({
+					address: "/track",
+					args: bitwig.localState
+				});
+
 			});
-			document.querySelectorAll('.deviceSlot').forEach(item => {
-				item.classList.remove("slotActive");
-			});
-			$( this ).addClass( "deviceActive" );
-			bitwig.localState[1] = $( this ).data( "device-index" );
-
-			bitwig.localState[2] = -1;
-			bitwig.localState[3] = -1;
-
-
-			console.log("bitwig.localState prior to osc send" );
-			console.log(bitwig.localState[0]);
-			console.log(bitwig.localState[1]);
-			console.log(bitwig.localState[2]);
-			console.log(bitwig.localState[3]);
-			port.send({
-				address: "/track",
-				args: bitwig.localState
-			});
-
 		});
 
-		$(".deviceSlot").on( "click", function() {
+		document.querySelectorAll('.deviceSlot').forEach(item => {
+			item.addEventListener('click', event => {
 
-			document.querySelectorAll('.device').forEach(item => {
-				item.classList.remove("deviceActive");
+				document.querySelectorAll('.device').forEach(item => {
+					item.classList.remove("deviceActive");
+				});
+				document.querySelectorAll('.deviceSlot').forEach(item => {
+					item.classList.remove("slotActive");
+				});
+				event.target.classList.add("slotActive");
+
+				var deviceSlotIndex = parseInt(event.target.getAttribute("data-slot-index"));
+				var parentDeviceIndex = parseInt(event.target.getAttribute("data-parent-device-index"));
+
+				bitwig.localState[1] = parentDeviceIndex;
+				bitwig.localState[2] = deviceSlotIndex;
+				bitwig.localState[3] = 0;
+				console.log("test begin");
+				console.log(bitwig.localState[0]);
+				console.log(bitwig.localState[1]);
+				console.log(bitwig.localState[2]);
+				console.log(bitwig.localState[3]);
+				console.log("test end");
+
+				// console.log("deviceSlotName is " + deviceSlotName );
+				port.send({
+					address: "/track",
+					args: bitwig.localState
+				});
+
 			});
-			document.querySelectorAll('.deviceSlot').forEach(item => {
-				item.classList.remove("slotActive");
-			});
-			$( this ).addClass( "slotActive" );
-			var deviceSlotIndex = $( this ).data( "slot-index" );
-			var parentDeviceIndex = $( this ).data( "parent-device-index" );
-
-			bitwig.localState[1] = parentDeviceIndex;
-			bitwig.localState[2] = deviceSlotIndex;
-			bitwig.localState[3] = 0;
-
-			console.log(bitwig.localState[0]);
-			console.log(bitwig.localState[1]);
-			console.log(bitwig.localState[2]);
-			console.log(bitwig.localState[3]);
-
-			// console.log("deviceSlotName is " + deviceSlotName );
-			port.send({
-				address: "/track",
-				args: bitwig.localState
-			});
-
 		});
 
 	} else if (oscBundle.packets[0].address == "/device-slot/devices"){
@@ -253,40 +245,59 @@ bitwig.parseBundle = function (oscBundle) {
 		var deviceSlotDevices = oscBundle.packets;
 		console.log(deviceSlotDevices);
 
-		$(".deviceSlotDevice").remove();
+		document.querySelectorAll('.deviceSlotDevice').forEach(item => {
+			item.remove();
+		});
 
 		deviceSlotDevices.forEach(function (value, index) {
 
 			var isActive = deviceSlotDevices[index].args[1];
 
-			if(isActive == true ){
-				$(".slotActive").parent().append('<button class="deviceSlotDevice slotDeviceActive" data-slot-device="' + index +'">'+ deviceSlotDevices[index].args[0] +'</button>');			
-			} else {
-				$(".slotActive").parent().append('<button class="deviceSlotDevice" data-slot-device="' + index +'">'+ deviceSlotDevices[index].args[0] +'</button>');			
+			const slotDevice = {
+				name: deviceSlotDevices[index].args[0],
+				index: index
 			}
+
+			const markupSlotDevice = `
+			<button class="deviceSlotDevice${isActive ? ' slotDeviceActive' : ''}" data-slot-device="${slotDevice.index}">
+				${slotDevice.name}
+			</button>
+			`;
+
+			var slotActive = document.querySelector(".slotActive");
+
+			slotActive.parentElement.insertAdjacentHTML("beforeend", markupSlotDevice);
 
 		});
 
-		$(".deviceSlotDevice").on( "click", function() {
+		document.querySelectorAll('.deviceSlotDevice').forEach(item => {
+			item.addEventListener('click', event => {
 
-			$(".deviceSlotDevice").removeClass( "deviceActive" );
-			$(".deviceSlot").removeClass( "slotDeviceActive" );
-			$( this ).addClass( "slotDeviceActive" );
-			var slotDeviceIndex = $( this ).data( "slot-device" );
-			bitwig.localState[3] = slotDeviceIndex;
+				document.querySelectorAll('.deviceSlotDevice').forEach(item => {
+					item.classList.remove("deviceActive");
+				});
+				document.querySelectorAll('.deviceSlot').forEach(item => {
+					item.classList.remove("slotDeviceActive");
+				});
+				event.target.classList.add("slotDeviceActive");
 
-			console.log("sending SLOT DEVICE");
-			console.log(bitwig.localState[0]);
-			console.log(bitwig.localState[1]);
-			console.log(bitwig.localState[2]);
-			console.log(bitwig.localState[3]);
+				var slotDeviceIndex = parseInt(event.target.getAttribute("data-slot-device"));
 
-			// console.log("deviceSlotName is " + deviceSlotName );
-			port.send({
-				address: "/track",
-				args: bitwig.localState
+				bitwig.localState[3] = slotDeviceIndex;
+
+				console.log("sending SLOT DEVICE");
+				console.log(bitwig.localState[0]);
+				console.log(bitwig.localState[1]);
+				console.log(bitwig.localState[2]);
+				console.log(bitwig.localState[3]);
+
+				// console.log("deviceSlotName is " + deviceSlotName );
+				port.send({
+					address: "/track",
+					args: bitwig.localState
+				});
+
 			});
-
 		});
 
 	}
