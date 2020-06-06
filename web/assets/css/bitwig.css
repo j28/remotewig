@@ -49,6 +49,28 @@ body {
 #bwSelector {
 	background-color: #2e2e2e;
 }
+
+#bwControls {
+	position: fixed;
+	bottom: 0;
+	background-color: red;
+	width: 100%;
+	height:240px;
+}
+#bwControls button {
+	height:80px;
+	background-color: #ccc;
+	width:50%;
+	border:none;
+	float:left;
+	font-size: 18px;
+}
+.panelVisible {
+	background-image: linear-gradient(120deg, #426a7f 2.63%, #444444 2.63%, #444444 50%, #426a7f 50%, #426a7f 52.63%, #444444 52.63%, #444444 100%);
+	background-size: 21.94px 38.00px;
+	color:#fff;
+}
+
 #currentTrack {
 	height:100px;
 	text-align: center;

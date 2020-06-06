@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function(){
 	if (window.navigator.standalone) {
 		document.getElementById("messageArea").style.display = "none";
 	}
+	bitwig.initControls();
 });
 
 var port = new osc.WebSocketPort({
@@ -33,12 +34,16 @@ bitwig.parseMessage = function (oscMessage) {
 	console.log(">> bitwig.parseMessage: " + currentMessage.address);
 	console.log(currentMessage.args);
 
-	if (currentMessage.address == "/device-slot/devices"){
-		// bitwig.cursorDeviceSet(currentMessage);
-	// } else if (currentMessage.address == "/track/color"){
-	// 	bitwig.currentTrackColor(currentMessage);
-	// } else if (currentMessage.address == "/track/devices"){
-	// 	// bitwig.currentTrackDevices(currentMessage);
+	if (currentMessage.address == "/panel/meter"){
+		bitwig.toggle("#pMeter", currentMessage.args[0]);
+	} else if (currentMessage.address == "/panel/io"){
+		bitwig.toggle("#pIo", currentMessage.args[0]);
+	} else if (currentMessage.address == "/device/toggle"){
+		bitwig.toggle("#dToggle", currentMessage.args[0]);
+	} else if (currentMessage.address == "/device/detail"){
+		bitwig.toggle("#dDetail", currentMessage.args[0]);
+	} else if (currentMessage.address == "/device/expanded"){
+		bitwig.toggle("#dExpanded", currentMessage.args[0]);
 	}
 
 }
@@ -304,6 +309,94 @@ bitwig.parseBundle = function (oscBundle) {
 
 }
 
+bitwig.initControls = function (oscMessage) {
+
+	document.querySelector("#pDevices").addEventListener('click', event => {
+		console.log("pDevices pressed");
+		var banana = "yellow";
+		port.send({
+			address: "/panel/devices",
+			args: banana
+		});
+	});
+
+	document.querySelector("#pNotes").addEventListener('click', event => {
+		console.log("pNotes pressed");
+		var banana = "red";
+		port.send({
+			address: "/panel/notes",
+			args: banana
+		});
+	});
+
+	// document.querySelector("#pMeter").addEventListener('click', event => {
+	// 	console.log("pMeter pressed");
+	// 	var banana = "green";
+	// 	port.send({
+	// 		address: "/panel/meter",
+	// 		args: banana
+	// 	});
+	// });
+
+	// document.querySelector("#pIo").addEventListener('click', event => {
+	// 	console.log("pIo pressed");
+	// 	var banana = "purple";
+	// 	port.send({
+	// 		address: "/panel/io",
+	// 		args: banana
+	// 	});
+	// });
+
+	document.querySelector("#pInspector").addEventListener('click', event => {
+		console.log("pInspector pressed");
+		var banana = "cyan";
+		port.send({
+			address: "/panel/inspector",
+			args: banana
+		});
+	});
+
+	document.querySelector("#dToggle").addEventListener('click', event => {
+		console.log("dToggle pressed");
+		var banana = "cyan";
+		port.send({
+			address: "/device/toggle",
+			args: banana
+		});
+	});
+
+	document.querySelector("#dDetail").addEventListener('click', event => {
+		console.log("dDetail pressed");
+		var banana = "magenta";
+		port.send({
+			address: "/device/detail",
+			args: banana
+		});
+	});
+
+	document.querySelector("#dExpanded").addEventListener('click', event => {
+		console.log("dExpanded pressed");
+		var banana = "black";
+		port.send({
+			address: "/device/expanded",
+			args: banana
+		});
+	});
+
+}
+
+bitwig.toggle = function (button, onOff) {
+
+	var el = document.querySelector(button);
+	if (onOff == true){
+		el.classList.add("panelVisible");
+	} else {
+		el.classList.remove("panelVisible");
+
+	};
+
+};
+
 port.on("bundle", function (oscBundle) {
 
 	bitwig.parseBundle(oscBundle);
@@ -331,6 +424,18 @@ var sendManual = function () {
 	</div>
 	<div id="devices">
 	</div>
+</div>
+
+<div id="bwControls">
+	<button id="pDevices">Devices</button>
+	<button id="pNotes">Notes</button>
+<!-- 	<button id="pMeter">Meter</button>
+	<button id="pIo">IO</button> -->
+	<button id="pInspector">Inspector</button>
+
+	<button id="dToggle">Enabled</button>
+	<button id="dDetail">Detail</button>
+	<button id="dExpanded">Expanded</button>
 </div>
 
 <div id="messageArea">
