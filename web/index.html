@@ -44,6 +44,8 @@ bitwig.parseMessage = function (oscMessage) {
 		bitwig.toggle("#dDetail", currentMessage.args[0]);
 	} else if (currentMessage.address == "/device/expanded"){
 		bitwig.toggle("#dExpanded", currentMessage.args[0]);
+	} else if (currentMessage.address == "/device/remote-controls"){
+		bitwig.toggle("#dRemoteControls", currentMessage.args[0]);
 	}
 
 }
@@ -383,6 +385,15 @@ bitwig.initControls = function (oscMessage) {
 		});
 	});
 
+	document.querySelector("#dRemoteControls").addEventListener('click', event => {
+		console.log("dRemoteControls pressed");
+		var banana = "grey";
+		port.send({
+			address: "/device/remote-controls",
+			args: banana
+		});
+	});
+
 }
 
 bitwig.toggle = function (button, onOff) {
@@ -427,6 +438,7 @@ var sendManual = function () {
 </div>
 
 <div id="bwControls">
+
 	<button id="pDevices">Devices</button>
 	<button id="pNotes">Notes</button>
 <!-- 	<button id="pMeter">Meter</button>
@@ -436,6 +448,8 @@ var sendManual = function () {
 	<button id="dToggle">Enabled</button>
 	<button id="dDetail">Detail</button>
 	<button id="dExpanded">Expanded</button>
+	<button id="dRemoteControls">Remote Controls</button>
+
 </div>
 
 <div id="messageArea">
