@@ -57,6 +57,7 @@ body {
 	width: 100%;
 	height:320px;
 }
+
 #bwControls button {
 	height:80px;
 	background-color: #ccc;
@@ -65,10 +66,31 @@ body {
 	float:left;
 	font-size: 18px;
 }
-.panelVisible {
+
+.bActive {
 	background-image: linear-gradient(120deg, #426a7f 2.63%, #444444 2.63%, #444444 50%, #426a7f 50%, #426a7f 52.63%, #444444 52.63%, #444444 100%);
 	background-size: 21.94px 38.00px;
 	color:#fff;
+}
+
+#bwControls button#aPlay {
+	background-color: #737373;
+	fill:#141414;
+}
+
+#aPlay svg {
+	fill:#fff;
+	margin-top: 8px;
+	height:24px;
+}
+
+#bwControls button#aPlay.bActive svg {
+	fill:#141414;
+}
+
+#bwControls button#aPlay.bActive {
+	background-color:#fd872b;
+	background-image:none;
 }
 
 #currentTrack {
@@ -98,6 +120,7 @@ body {
 	color:#fff;
 	border-right: 1px solid #2e2e2e;
 }
+
 #devices button.device {
 	float:left;
 	clear:left;
@@ -123,8 +146,6 @@ body {
 	background-image: linear-gradient(120deg, #426a7f 2.63%, #444444 2.63%, #444444 50%, #426a7f 50%, #426a7f 52.63%, #444444 52.63%, #444444 100%);
 	background-size: 21.94px 38.00px;
 }
-
-
 
 #devices button.deviceSlotDevice {
 	float:left;
