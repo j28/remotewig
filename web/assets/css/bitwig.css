@@ -46,6 +46,11 @@ body {
 	font-size: 16px;
 }
 
+#bwRemoteControls {
+	position:absolute;
+	width:100%;
+}
+
 #bwSelector {
 	background-color: #2e2e2e;
 }
@@ -56,6 +61,19 @@ body {
 	background-color: red;
 	width: 100%;
 	height:320px;
+}
+
+#bwRemoteControls button {
+	height:80px;
+	background-color: #ccc;
+	width:50%;
+	border:none;
+	float:left;
+	font-size: 18px;
+}
+
+#bwRemoteControls button.pageActive {
+	background-color: #fd872b;
 }
 
 #bwControls button {
