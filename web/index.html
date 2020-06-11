@@ -225,6 +225,10 @@ bitwig.parseBundle = function (oscBundle) {
 				});
 				event.target.classList.add("slotActive");
 
+				document.querySelectorAll('.deviceSlotDevice').forEach(item => {
+					item.remove();
+				});
+
 				var deviceSlotIndex = parseInt(event.target.getAttribute("data-slot-index"));
 				var parentDeviceIndex = parseInt(event.target.getAttribute("data-parent-device-index"));
 
@@ -259,6 +263,10 @@ bitwig.parseBundle = function (oscBundle) {
 		});
 
 		deviceSlotDevices.forEach(function (value, index) {
+
+			// when there are no device slot devices the array is empty
+			if(deviceSlotDevices[index].args[0] == null)
+				return;
 
 			var isActive = deviceSlotDevices[index].args[1];
 
