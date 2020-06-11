@@ -46,13 +46,9 @@ body {
 	font-size: 16px;
 }
 
-#bwRemoteControls {
-	position:absolute;
-	width:100%;
-}
-
 #bwSelector {
 	background-color: #2e2e2e;
+	width:80%;
 }
 
 #bwControls {
@@ -60,29 +56,30 @@ body {
 	bottom: 0;
 	background-color: red;
 	width: 100%;
-	height:320px;
-}
-
-#bwRemoteControls button {
-	height:80px;
-	background-color: #ccc;
-	width:50%;
-	border:none;
-	float:left;
-	font-size: 18px;
-}
-
-#bwRemoteControls button.pageActive {
-	background-color: #fd872b;
+	height:160px;
 }
 
 #bwControls button {
 	height:80px;
 	background-color: #ccc;
-	width:50%;
+	width:20%;
 	border:none;
 	float:left;
 	font-size: 18px;
+	border-right: 1px solid #6e6e6e;
+	border-bottom: 1px solid #6e6e6e;
+}
+
+#bwControls button:nth-child(5),
+#bwControls button:nth-child(10) {
+	border-right:none;
+}
+#bwControls button:nth-child(6),
+#bwControls button:nth-child(7),
+#bwControls button:nth-child(8),
+#bwControls button:nth-child(9),
+#bwControls button:nth-child(10) {
+	border-bottom: none;
 }
 
 .bActive {
@@ -111,10 +108,32 @@ body {
 	background-image:none;
 }
 
+#bwRemoteControls {
+	width:20%;
+	float:right;
+	height: 560px;
+	overflow-y: scroll;
+/*	position:absolute;
+	width:100%;*/
+}
+
+#bwRemoteControls button {
+	height:80px;
+	background-color: #ccc;
+	width:100%;
+	border:none;
+	font-size: 18px;
+	border-bottom: 1px solid #6e6e6e;
+}
+
+#bwRemoteControls button.pageActive {
+	background-color: #fd872b;
+}
+
 #currentTrack {
-	height:100px;
+	height:79px;
 	text-align: center;
-	line-height: 100px;
+	line-height: 80px;
 	color:#fff;
 	font-family: Poppins;
 	font-weight: 800;
@@ -127,7 +146,7 @@ body {
 }
 
 #devices button {
-	height: 95px;
+	height: 80px;
 	width:206px;
 	border:none;
 	border-bottom: 1px solid #2e2e2e;

@@ -321,6 +321,14 @@ bitwig.parseBundle = function (oscBundle) {
 		console.log("moo");
 		console.log(pages);
 
+
+		var bwRemoteControlsEl = document.querySelector("#bwRemoteControls");
+		if(pages.length > 6){
+			bwRemoteControlsEl.style.borderBottom = '5px solid #6e6e6e';
+		} else {
+			bwRemoteControlsEl.style.borderBottom = 'none';
+		}
+
 		pages.forEach(function (value, index) {
 
 			var currentPage = value.args;
@@ -382,23 +390,23 @@ bitwig.initControls = function (oscMessage) {
 		});
 	});
 
-	// document.querySelector("#pMeter").addEventListener('click', event => {
-	// 	console.log("pMeter pressed");
-	// 	var banana = "green";
-	// 	port.send({
-	// 		address: "/panel/meter",
-	// 		args: banana
-	// 	});
-	// });
+	document.querySelector("#pMeter").addEventListener('click', event => {
+		console.log("pMeter pressed");
+		var banana = "green";
+		port.send({
+			address: "/panel/meter",
+			args: banana
+		});
+	});
 
-	// document.querySelector("#pIo").addEventListener('click', event => {
-	// 	console.log("pIo pressed");
-	// 	var banana = "purple";
-	// 	port.send({
-	// 		address: "/panel/io",
-	// 		args: banana
-	// 	});
-	// });
+	document.querySelector("#pIo").addEventListener('click', event => {
+		console.log("pIo pressed");
+		var banana = "purple";
+		port.send({
+			address: "/panel/io",
+			args: banana
+		});
+	});
 
 	document.querySelector("#pInspector").addEventListener('click', event => {
 		console.log("pInspector pressed");
@@ -463,7 +471,6 @@ bitwig.toggle = function (button, onOff) {
 		el.classList.add("bActive");
 	} else {
 		el.classList.remove("bActive");
-
 	};
 
 };
@@ -504,9 +511,9 @@ var sendManual = function () {
 
 	<button id="pDevices">Devices</button>
 	<button id="pNotes">Notes</button>
-<!-- 	<button id="pMeter">Meter</button>
-	<button id="pIo">IO</button> -->
 	<button id="pInspector">Inspector</button>
+	<button id="pMeter">Meter</button>
+	<button id="pIo">IO</button>
 
 	<button id="dToggle">Enabled</button>
 	<button id="dDetail">Detail</button>
