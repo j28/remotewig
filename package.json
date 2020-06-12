@@ -1,20 +1,32 @@
 {
-	"name": "osc.js-examples-udp-ws",
-	"main": "index.js",
-	"version": "0.1.1",
-	"description": "Example of how to bi-directionally send OSC messages between a web browser and a UDP socket.",
-	"author": "Colin Clark",
-	"homepage": "http://flockingjs.org/",
+	"name": "bitwig-remote",
+	"bin": "index.js",
+	"pkg": {
+		"scripts": [
+			"*.js",
+			"web/*.js"
+		],
+		"assets": [
+			"web/*",
+			"web/**/*",
+			"web/***/**/*"
+		]
+	},
+	"version": "0.1",
+	"description": "Bitwig Remote is a bridge between a web browser and Bitwig.",
+	"author": "J28",
+	"homepage": "http://stoyanvasilev.me/",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/colinbdclark/osc.js-examples.git"
+		"url": "git://github.com/j28/osc-node-bitwig.git"
 	},
 	"readmeFilename": "README.md",
-	"bugs": "https://github.com/colinbdclark/osc.js/issues",
+	"bugs": "https://github.com/j28/osc-node-bitwig/issues",
 	"license": "(MIT OR GPL-2.0)",
 	"keywords": [
 		"Open Sound Control",
-		"OSC"
+		"OSC",
+		"Bitwig"
 	],
 	"dependencies": {
 		"connect": "^3.7.0",
