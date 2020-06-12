@@ -18,10 +18,10 @@
 	"homepage": "http://stoyanvasilev.me/",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/j28/osc-node-bitwig.git"
+		"url": "git://github.com/j28/bitwig-remote.git"
 	},
 	"readmeFilename": "README.md",
-	"bugs": "https://github.com/j28/osc-node-bitwig/issues",
+	"bugs": "https://github.com/j28/bitwig-remote/issues",
 	"license": "(MIT OR GPL-2.0)",
 	"keywords": [
 		"Open Sound Control",
