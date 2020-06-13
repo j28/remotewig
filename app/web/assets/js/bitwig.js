@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function(){
 	if (window.navigator.standalone) {
 		document.getElementById("messageArea").style.display = "none";
