@@ -1,5 +1,5 @@
 {
-	"name": "bitwig-remote",
+	"name": "remotewig",
 	"bin": "index.js",
 	"pkg": {
 		"scripts": [
@@ -13,7 +13,7 @@
 		]
 	},
 	"version": "0.1",
-	"description": "Bitwig Remote is a bridge between a web browser and Bitwig.",
+	"description": "remotewig is a bridge between a web browser and Bitwig.",
 	"author": "J28",
 	"homepage": "http://stoyanvasilev.me/",
 	"repository": {
