@@ -7,7 +7,7 @@ From the command line:
 ## Running the Application From Source
 
 1. In the <code>/</code> folder, start the Node.js server with <code>node .</code>
-2. In the <code>/web</code> folder, open index.html in a web browser; a log message will be printed to the terminal when you are connected
+2. Open <code>10.0.0.2:8080/web/index.html</code> in a web browser; a log message will be printed to the terminal when you are connected
 
 ## Packaging as a Standalone
 
