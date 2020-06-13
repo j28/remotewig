@@ -17,4 +17,4 @@ From the command line:
 
 ## Running as a Standalone
 
-In the <code>/app</code> folder, run <code>./bitwig-remote</code>
+In the <code>/app</code> folder, run <code>./remotewig</code>
