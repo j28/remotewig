@@ -1,7 +1,7 @@
 ## Installation
 
 From the command line:
-1. Run <code>npm install</code>
+1. In the <code>/</code> folder, run <code>npm install</code>
 2. In the <code>web</code> folder, run <code>npm install</code>
 
 ## Running the Application From Source
