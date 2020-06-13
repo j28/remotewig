@@ -147,7 +147,7 @@ body {
 
 #devices button {
 	height: 80px;
-	width:206px;
+	width:25%;
 	border:none;
 	border-bottom: 1px solid #2e2e2e;
 	font-size: 17px;
@@ -166,7 +166,7 @@ body {
 #devices button.deviceSlot {
 	background-color: #426a7f;
 	float:left;
-	width:104px;
+	width:12.5%;
 }
 
 #devices button.deviceActive {
