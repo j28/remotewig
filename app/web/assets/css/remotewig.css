@@ -46,9 +46,18 @@ body {
 	font-size: 16px;
 }
 
+#tracks button {
+	width:6.25%;
+	float:left;
+	height:40px;
+	display: block;
+	border: none;
+}
+
 #bwSelector {
 	background-color: #2e2e2e;
 	width:80%;
+	clear:left;
 }
 
 #bwControls {

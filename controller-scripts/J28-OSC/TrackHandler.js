@@ -88,21 +88,39 @@ TrackHandler.prototype.cursorTrackNameSend = function() {
 
 TrackHandler.prototype.tracksColorsSend = function() {
 
-	var tracksColors = [];
-	for (i = 0; i < this.trackbank.getSizeOfBank(); i++) {
+	println("before bundle start");
+	sender.startBundle();
 
-		var track = this.trackbank.getItemAt(i);
-		trackColor = track.color().get();
+		var tracksColors = [];
+		for (i = 0; i < this.trackbank.getSizeOfBank(); i++) {
 
-		var currentColorRed = trackColor.getRed255();
-		var currentColorGreen = trackColor.getGreen255();
-		var currentColorBlue = trackColor.getBlue255();
+			var track = this.trackbank.getItemAt(i);
+			trackColor = track.color().get();
 
-		println("\ncurrentColor Red is: " + currentColorRed);
-		println("currentColor Green is: " + currentColorGreen);
-		println("currentColor Blue is: " + currentColorBlue);
+			var currentColorRed = trackColor.getRed255();
+			var currentColorGreen = trackColor.getGreen255();
+			var currentColorBlue = trackColor.getBlue255();
 
-	}
+			tracksColors[i] = [];
+			tracksColors[i][0] = currentColorRed;
+			tracksColors[i][1] = currentColorGreen;
+			tracksColors[i][2] = currentColorBlue;
+
+			println("\ncurrentColor Red is: " + currentColorRed);
+			println("currentColor Green is: " + currentColorGreen);
+			println("currentColor Blue is: " + currentColorBlue);
+
+			try {
+				sender.sendMessage('/track/colorZ', tracksColors[i]);
+			} catch (err) {
+				println("error sending level: " + err);
+			}
+
+		}
+
+	sender.endBundle();
+	println("after bundle end");
+
 
 };
 

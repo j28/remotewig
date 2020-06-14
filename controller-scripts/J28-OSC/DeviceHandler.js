@@ -60,8 +60,6 @@ DeviceHandler.prototype.updateLocalState = function() {
 
 		if (deviceHandler.onHold == true) {
 
-
-
 			var cursorDevicePosition = deviceHandler.cursorDevice.position().get();
 
 			deviceHandler.newName = deviceHandler.cursorDevice.name().get();
@@ -189,6 +187,91 @@ DeviceHandler.prototype.browserSelectDevice = function() {
 
 };
 
+// update devices and slots
+DeviceHandler.prototype.updateBrowserRoot = function() {
+
+	trackHandler.tracksColorsSend();
+
+	host.scheduleTask(function() {
+		deviceHandler.currentDeviceName = deviceHandler.cursorDevice.name().get();
+		host.showPopupNotification(deviceHandler.currentDeviceName);
+	}, 50);
+
+	sender.startBundle();
+
+		println("start outer bundle...");
+		trackHandler.cursorTrackPositionSend();
+		trackHandler.cursorTrackNameSend();
+		trackHandler.cursorTrackColorSend();
+
+		// send top devices only
+		sender.startBundle();
+			var rootDeviceIndex = this.cursorDevice.position().get();
+			for (var d = 0; d < 15; d++) {
+				var deviceName = deviceBank.getDevice(d).name().get();
+				if (deviceName) {
+
+					println("\nlooping through device bank... index: " + d);
+					var deviceSlotListReversed = deviceBank.getDevice(d).slotNames().get();
+					var deviceSlotList = [];
+					println("deviceSlotListReversed.length is: " + deviceSlotListReversed.length);
+					if (deviceSlotListReversed.length > 1) {
+						deviceSlotList[0] = deviceSlotListReversed[1];
+						deviceSlotList[1] = deviceSlotListReversed[0];
+					} else {
+						deviceSlotList = deviceSlotListReversed;
+					}
+
+					sender.startBundle();
+
+						var deviceNameArgs = [];
+						deviceNameArgs[0] = deviceName;
+
+						if (localState[1] == d) {
+							deviceNameArgs[1] = true;
+						} else {
+							deviceNameArgs[1] = false;
+						}
+						println("localState[1] is: " + localState[1]);
+
+						try {
+							sender.sendMessage('/track/device', deviceNameArgs);
+						} catch (err) {
+							println("error sending level: " + err);
+						}
+
+						if (deviceSlotList.length > 0) {
+
+							println("device slot List exists....");
+							sender.startBundle();
+
+								println("\nstart inner bundle...");
+								for (r = 0; r < deviceSlotList.length; r++) {
+
+									if (deviceSlotList[r]) {
+
+										try {
+											sender.sendMessage('/track/device/slots', deviceSlotList[r]);
+										} catch (err) {
+											println("error sending level: " + err);
+										}
+									}
+
+								}
+							sender.endBundle();
+							println("inner bundle ended...");
+
+						}
+					sender.endBundle();
+
+				}
+			}
+		sender.endBundle();
+
+	sender.endBundle();
+
+};
+
 // update device slot devices
 DeviceHandler.prototype.updateBrowserSlotDevices = function() {
 
@@ -240,91 +323,6 @@ DeviceHandler.prototype.updateBrowserSlotDevices = function() {
 		}
 
 	}
-
-	sender.endBundle();
-
-};
-
-// update devices and slots
-DeviceHandler.prototype.updateBrowserRoot = function() {
-
-	trackHandler.tracksColorsSend();
-
-	host.scheduleTask(function() {
-		deviceHandler.currentDeviceName = deviceHandler.cursorDevice.name().get();
-		host.showPopupNotification(deviceHandler.currentDeviceName);
-	}, 50);
-
-	sender.startBundle();
-
-	println("start outer bundle...");
-	trackHandler.cursorTrackPositionSend();
-	trackHandler.cursorTrackNameSend();
-	trackHandler.cursorTrackColorSend();
-
-	// send top devices only
-	sender.startBundle();
-	var rootDeviceIndex = this.cursorDevice.position().get();
-	for (var d = 0; d < 15; d++) {
-		var deviceName = deviceBank.getDevice(d).name().get();
-		if (deviceName) {
-
-			println("\nlooping through device bank... index: " + d);
-			var deviceSlotListReversed = deviceBank.getDevice(d).slotNames().get();
-			var deviceSlotList = [];
-			println("deviceSlotListReversed.length is: " + deviceSlotListReversed.length);
-			if (deviceSlotListReversed.length > 1) {
-				deviceSlotList[0] = deviceSlotListReversed[1];
-				deviceSlotList[1] = deviceSlotListReversed[0];
-			} else {
-				deviceSlotList = deviceSlotListReversed;
-			}
-
-			sender.startBundle();
-
-			var deviceNameArgs = [];
-			deviceNameArgs[0] = deviceName;
-
-			if (localState[1] == d) {
-				deviceNameArgs[1] = true;
-			} else {
-				deviceNameArgs[1] = false;
-			}
-			println("localState[1] is: " + localState[1]);
-
-			try {
-				sender.sendMessage('/track/device', deviceNameArgs);
-			} catch (err) {
-				println("error sending level: " + err);
-			}
-
-			if (deviceSlotList.length > 0) {
-
-				println("device slot List exists....");
-				sender.startBundle();
-
-				println("\nstart inner bundle...");
-				for (r = 0; r < deviceSlotList.length; r++) {
-
-					if (deviceSlotList[r]) {
-
-						try {
-							sender.sendMessage('/track/device/slots', deviceSlotList[r]);
-						} catch (err) {
-							println("error sending level: " + err);
-						}
-					}
-
-				}
-				sender.endBundle();
-				println("inner bundle ended...");
-
-			}
-			sender.endBundle();
-
-		}
-	}
-	sender.endBundle();
 
 	sender.endBundle();
 

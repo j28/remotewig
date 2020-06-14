@@ -19,6 +19,8 @@ port.on("bundle", function(oscBundle) {
 
 	if (oscBundle.packets[0].address == "/track/position") {
 		bitwig.renderTrackInfo(oscBundle);
+	} else if (oscBundle.packets[0].address == "/track/colorZ") {
+		bitwig.renderTracks(oscBundle);
 	} else if (oscBundle.packets[0].address == "/device-slot/devices") {
 		bitwig.renderSlotDevices(oscBundle);
 	} else if (oscBundle.packets[0].address == "/remote-controls/pages") {
@@ -108,6 +110,56 @@ bitwig.currentTrackColor = function(oscMessage) {
 
 };
 
+bitwig.renderTracks = function(oscBundle) {
+
+	console.log("them trackz is here...");
+
+	document.querySelectorAll('.track').forEach(item => {
+		item.remove();
+	});
+
+	console.log(oscBundle.packets[0].args[0]);
+
+	var tracks = oscBundle.packets.reverse();
+
+	tracks.forEach(function(value, index) {
+
+		var strFull = bitwig.concatColor(tracks[index].args[0], tracks[index].args[1], tracks[index].args[2]);
+
+		const track = {
+			color: strFull,
+			index: index
+		};
+
+		const markupTrack = `
+		<button style="background-color: ${track.color}" class="track" data-track-index="${track.index}">
+		</button>
+		`;
+
+		var tracksEl = document.querySelector("#tracks");
+
+		tracksEl.insertAdjacentHTML("afterbegin", markupTrack);
+
+	});
+
+};
+
+bitwig.concatColor = function(colorRed, colorGreen, colorBlue) {
+
+	var trackRed = colorRed;
+	var trackGreen = colorGreen;
+	var trackBlue = colorBlue;
+	var strBegin = "rgb(";
+	var strComma = ", ";
+	var strEnd = ")";
+	var strFull = strBegin.concat(trackRed, strComma, trackGreen, strComma, trackBlue, strEnd);
+	console.log(strFull);
+
+	return strFull;
+
+};
+
+
 bitwig.renderTrackInfo = function(oscBundle) {
 	// $("#message").text(JSON.stringify(oscBundle, null, 2));
 
@@ -123,14 +175,7 @@ bitwig.renderTrackInfo = function(oscBundle) {
 
 	var trackColor = oscBundle.packets[2];
 	console.log("track color is: " + trackColor);
-	var trackRed = trackColor.args[0];
-	var trackGreen = trackColor.args[1];
-	var trackBlue = trackColor.args[2];
-	var strBegin = "rgb(";
-	var strComma = ", ";
-	var strEnd = ")";
-	var strFull = strBegin.concat(trackRed, strComma, trackGreen, strComma, trackBlue, strEnd);
-	console.log(strFull);
+	var strFull = bitwig.concatColor(trackColor.args[0], trackColor.args[1], trackColor.args[2]);
 	currentTrackEl.style.backgroundColor = strFull;
 
 	var devices = oscBundle.packets[3].packets;
@@ -140,8 +185,6 @@ bitwig.renderTrackInfo = function(oscBundle) {
 	// var currentDeviceIndex = devices[0].args[0];
 	// console.log("current device index is:");
 	// console.log(currentDeviceIndex);
-
-	// devices.splice(0,1);
 
 	var devicesEl = document.querySelector("#devices");
 	devicesEl.innerHTML = '';
@@ -165,6 +208,7 @@ bitwig.renderTrackInfo = function(oscBundle) {
 		`;
 
 		devicesEl.insertAdjacentHTML("beforeend", markupDevice);
+
 		var deviceSlots = value.packets[1].packets;
 
 		// console.log("device slots:");
@@ -341,9 +385,7 @@ bitwig.renderRemoteControls = function(oscBundle) {
 	});
 
 	var pages = oscBundle.packets;
-	console.log("moo");
 	console.log(pages);
-
 
 	var bwRemoteControlsEl = document.querySelector("#bwRemoteControls");
 	if (pages.length > 6) {
