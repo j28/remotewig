@@ -47,7 +47,7 @@ body {
 }
 
 #tracks button {
-	width:6.24%;
+	width:6.25%;
 	float:left;
 	height:80px;
 	display: block;
@@ -56,6 +56,10 @@ body {
 	color:#fff;
 	font-weight: 600;
 	padding: 0 4px;
+}
+
+#tracks button:nth-child(16) {
+	border-right: none;
 }
 
 #bwSelector {
