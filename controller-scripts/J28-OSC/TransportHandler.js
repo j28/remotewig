@@ -1,21 +1,20 @@
-function TransportHandler (transport)
-{
+function TransportHandler(transport) {
 	this.transport = transport;
-	this.transport.isPlaying ().markInterested ();
-	this.transport.isPlaying ().addValueObserver(applicationPlayObserver);
+	this.transport.isPlaying().markInterested();
+	this.transport.isPlaying().addValueObserver(applicationPlayObserver);
 
 }
 
 
-TransportHandler.prototype.applicationPlay = function (){
+TransportHandler.prototype.applicationPlay = function() {
 
 	this.transport.play();
 
 };
 
-TransportHandler.prototype.applicationPlayUpdate = function (){
+TransportHandler.prototype.applicationPlayUpdate = function() {
 
-	var onOff = this.transport.isPlaying ().get();
+	var onOff = this.transport.isPlaying().get();
 
 	println("this.cursorDevice.isRemoteControlsSectionVisible ().get(): " + onOff);
 	var oscArgs = [];

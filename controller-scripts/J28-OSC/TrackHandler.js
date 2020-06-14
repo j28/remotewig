@@ -1,23 +1,26 @@
-function TrackHandler (trackbank, cursorTrack)
-{
+function TrackHandler(trackbank, cursorTrack) {
 
 	this.trackbank = trackbank;
 	this.cursorTrack = cursorTrack;
 
 	this.devicesAmount = [];
 
-	for (i = 0; i < this.trackbank.getSizeOfBank (); i++)
-	{
-		var track = this.trackbank.getItemAt (i);
-		var vol = track.volume ();
-		vol.markInterested ();
-		vol.setIndication (true);
+	for (i = 0; i < this.trackbank.getSizeOfBank(); i++) {
 
-		var name = track.name ();
-		name.markInterested ();
+		var track = this.trackbank.getItemAt(i);
+		var vol = track.volume();
+		vol.markInterested();
+		vol.setIndication(true);
+
+		var name = track.name();
+		name.markInterested();
+
+		var color = track.color();
+		color.markInterested();
+
 	}
 
-	this.trackbank.followCursorTrack (this.cursorTrack);
+	this.trackbank.followCursorTrack(this.cursorTrack);
 
 	this.cursorTrack.name().addValueObserver(this.updateLocalState);
 	this.cursorTrack.color().markInterested();
@@ -30,23 +33,22 @@ function TrackHandler (trackbank, cursorTrack)
 
 }
 
-TrackHandler.prototype.updateLocalState = function (){
+TrackHandler.prototype.updateLocalState = function() {
 
-	localState[0] = this.cursorTrack.position ().get();
+	localState[0] = this.cursorTrack.position().get();
 
-	host.scheduleTask(function(){
+	host.scheduleTask(function() {
 		deviceHandler.updateBrowserRoot();
-	},50);	
-}
+	}, 50);
+};
 
 
-TrackHandler.prototype.selectTrack = function (){
+TrackHandler.prototype.selectTrack = function() {
 	// this.trackbank.getItemAt (localState[0]).select ();
-}
+};
 
 
-TrackHandler.prototype.cursorTrackPositionSend = function ()
-{
+TrackHandler.prototype.cursorTrackPositionSend = function() {
 
 	var trackPosition = this.cursorTrack.position().get();
 	// println("track name is: " + trackName);
@@ -60,10 +62,9 @@ TrackHandler.prototype.cursorTrackPositionSend = function ()
 		println("error sending level: " + err);
 	}
 
-}
+};
 
-TrackHandler.prototype.cursorTrackNameSend = function ()
-{
+TrackHandler.prototype.cursorTrackNameSend = function() {
 
 	var trackName = this.cursorTrack.name().get();
 	// println("track name is: " + trackName);
@@ -77,23 +78,42 @@ TrackHandler.prototype.cursorTrackNameSend = function ()
 		println("error sending level: " + err);
 	}
 
-	host.showPopupNotification( trackName );
+	host.showPopupNotification(trackName);
 
 	// stuff like this does not work... because one has to go through the device bank to access the devices inside a track :(
 	// var cursorTrackDevice1 = cursorTrack.getDevice (0).name ().get();
 	// println("inside track name observer cursor track device 1: " + cursorTrackDevice1);
 
-}
+};
 
-TrackHandler.prototype.cursorTrackColorSend = function ()
-{
+TrackHandler.prototype.tracksColorsSend = function() {
 
-	var trackColor = this.cursorTrack.color().get ();
+	var tracksColors = [];
+	for (i = 0; i < this.trackbank.getSizeOfBank(); i++) {
+
+		var track = this.trackbank.getItemAt(i);
+		trackColor = track.color().get();
+
+		var currentColorRed = trackColor.getRed255();
+		var currentColorGreen = trackColor.getGreen255();
+		var currentColorBlue = trackColor.getBlue255();
+
+		println("\ncurrentColor Red is: " + currentColorRed);
+		println("currentColor Green is: " + currentColorGreen);
+		println("currentColor Blue is: " + currentColorBlue);
+
+	}
+
+};
+
+TrackHandler.prototype.cursorTrackColorSend = function() {
+
+	var trackColor = this.cursorTrack.color().get();
 	// println("track color is: " + trackColor);
 
-	var currentColorRed = trackColor.getRed255 ();
-	var currentColorGreen = trackColor.getGreen255 ();
-	var currentColorBlue = trackColor.getBlue255 ();
+	var currentColorRed = trackColor.getRed255();
+	var currentColorGreen = trackColor.getGreen255();
+	var currentColorBlue = trackColor.getBlue255();
 
 	var oscArgs = [];
 	oscArgs[0] = currentColorRed;
@@ -106,4 +126,4 @@ TrackHandler.prototype.cursorTrackColorSend = function ()
 		println("error sending level: " + err);
 	}
 
-}
+};

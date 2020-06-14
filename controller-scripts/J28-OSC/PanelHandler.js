@@ -1,38 +1,38 @@
-function PanelHandler (){
+function PanelHandler() {
 
 	mixer.isMeterSectionVisible().markInterested();
 	mixer.isIoSectionVisible().markInterested();
 
 };
 
-PanelHandler.prototype.togglePanelInspector = function (){
+PanelHandler.prototype.togglePanelInspector = function() {
 
-	application.toggleInspector	();
-
-};
-
-PanelHandler.prototype.togglePanelDevices = function (){
-
-	application.toggleDevices ();
+	application.toggleInspector();
 
 };
 
-PanelHandler.prototype.togglePanelNotes = function (){
+PanelHandler.prototype.togglePanelDevices = function() {
+
+	application.toggleDevices();
+
+};
+
+PanelHandler.prototype.togglePanelNotes = function() {
 
 	// mixer.isDeviceSectionVisible();
-	application.toggleNoteEditor ()
+	application.toggleNoteEditor();
 
 };
 
-PanelHandler.prototype.togglePanelMeter = function (){
+PanelHandler.prototype.togglePanelMeter = function() {
 
 	mixer.isMeterSectionVisible().toggle();
 
 	var onOff = mixer.isMeterSectionVisible().get();
 	// values are reversed for some reason
-	if (onOff == true){
+	if (onOff == true) {
 		onOff = false;
-	} else if (onOff == false){
+	} else if (onOff == false) {
 		onOff = true;
 	};
 
@@ -48,15 +48,15 @@ PanelHandler.prototype.togglePanelMeter = function (){
 
 };
 
-PanelHandler.prototype.togglePanelIo = function (){
+PanelHandler.prototype.togglePanelIo = function() {
 
 	mixer.isIoSectionVisible().toggle();
 
 	var onOff = mixer.isIoSectionVisible().get();
 	// values are reversed for some reason
-	if (onOff == true){
+	if (onOff == true) {
 		onOff = false;
-	} else if (onOff == false){
+	} else if (onOff == false) {
 		onOff = true;
 	};
 
