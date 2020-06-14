@@ -43,8 +43,11 @@ TrackHandler.prototype.updateLocalState = function() {
 };
 
 
-TrackHandler.prototype.selectTrack = function() {
-	// this.trackbank.getItemAt (localState[0]).select ();
+TrackHandler.prototype.selectTrack = function(trackPosition) {
+
+	// println("track POSITION is: " + trackPosition);
+	this.trackbank.getItemAt (trackPosition).select ();
+
 };
 
 
@@ -88,6 +91,12 @@ TrackHandler.prototype.cursorTrackNameSend = function() {
 
 TrackHandler.prototype.tracksColorsSend = function() {
 
+	// var cursorTrackPosition = this.cursorTrack.position().get();
+	// println("POSITION: " + cursorTrackPosition);
+
+	var cursorTrackName = this.cursorTrack.name().get();
+	// println("NAME: " + cursorTrackName);
+
 	println("before bundle start");
 	sender.startBundle();
 
@@ -95,7 +104,8 @@ TrackHandler.prototype.tracksColorsSend = function() {
 		for (i = 0; i < this.trackbank.getSizeOfBank(); i++) {
 
 			var track = this.trackbank.getItemAt(i);
-			trackColor = track.color().get();
+			var trackColor = track.color().get();
+			var trackName = track.name().get();
 
 			var currentColorRed = trackColor.getRed255();
 			var currentColorGreen = trackColor.getGreen255();
@@ -105,13 +115,20 @@ TrackHandler.prototype.tracksColorsSend = function() {
 			tracksColors[i][0] = currentColorRed;
 			tracksColors[i][1] = currentColorGreen;
 			tracksColors[i][2] = currentColorBlue;
+			tracksColors[i][3] = trackName;
+
+			if(cursorTrackName == trackName){
+				tracksColors[i][4] = true;
+			} else {
+				tracksColors[i][4] = false;
+			}
 
 			println("\ncurrentColor Red is: " + currentColorRed);
 			println("currentColor Green is: " + currentColorGreen);
 			println("currentColor Blue is: " + currentColorBlue);
 
 			try {
-				sender.sendMessage('/track/colorZ', tracksColors[i]);
+				sender.sendMessage('/track/render', tracksColors[i]);
 			} catch (err) {
 				println("error sending level: " + err);
 			}
@@ -120,7 +137,6 @@ TrackHandler.prototype.tracksColorsSend = function() {
 
 	sender.endBundle();
 	println("after bundle end");
-
 
 };
 

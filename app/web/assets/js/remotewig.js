@@ -19,7 +19,7 @@ port.on("bundle", function(oscBundle) {
 
 	if (oscBundle.packets[0].address == "/track/position") {
 		bitwig.renderTrackInfo(oscBundle);
-	} else if (oscBundle.packets[0].address == "/track/colorZ") {
+	} else if (oscBundle.packets[0].address == "/track/render") {
 		bitwig.renderTracks(oscBundle);
 	} else if (oscBundle.packets[0].address == "/device-slot/devices") {
 		bitwig.renderSlotDevices(oscBundle);
@@ -120,26 +120,55 @@ bitwig.renderTracks = function(oscBundle) {
 
 	console.log(oscBundle.packets[0].args[0]);
 
-	var tracks = oscBundle.packets.reverse();
+	var tracks = oscBundle.packets;
 
 	tracks.forEach(function(value, index) {
+
+		var trackName = tracks[index].args[3];
+		var isActive = tracks[index].args[4];
 
 		var strFull = bitwig.concatColor(tracks[index].args[0], tracks[index].args[1], tracks[index].args[2]);
 
 		const track = {
 			color: strFull,
+			isActive: isActive,
+			name: trackName,
 			index: index
 		};
 
 		const markupTrack = `
-		<button style="background-color: ${track.color}" class="track" data-track-index="${track.index}">
+		<button 
+			class="track${track.isActive ? ' trackActive' : ''}" 
+			data-track-index="${track.index}" 
+			style="background-color: ${track.color}; ${track.isActive ? 'border-bottom:1px solid #fff' : 'border-bottom:1px solid #2e2e2e;'}">
+			${track.name}
 		</button>
 		`;
 
 		var tracksEl = document.querySelector("#tracks");
 
-		tracksEl.insertAdjacentHTML("afterbegin", markupTrack);
+		tracksEl.insertAdjacentHTML("beforeend", markupTrack);
 
+	});
+
+	document.querySelectorAll('.track').forEach(item => {
+		item.addEventListener('click', event => {
+
+			document.querySelectorAll('.track').forEach(item => {
+				item.classList.remove("trackActive");
+			});
+			event.target.classList.add("trackActive");
+
+			var oscArgs = [];
+			oscArgs[0] = parseInt(event.target.getAttribute("data-track-index"));
+			// console.log("YOOYOYOYOYOY: " + oscArgs[0]);
+
+			port.send({
+				address: "/track/select",
+				args: oscArgs
+			});
+
+		});
 	});
 
 };

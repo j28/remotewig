@@ -1,4 +1,4 @@
-loadAPI(10);
+loadAPI(11);
 load("polyfill.js");
 load("TransportHandler.js");
 load("PanelHandler.js");
@@ -138,6 +138,16 @@ function init() {
 			println('- track method: msg args - ' + localState[3]);
 
 			deviceHandler.browserSelectDevice();
+
+		});
+
+	as.registerMethod('/track/select',
+		',f',
+		'Select track',
+		function(c, msg) {
+			// println("c coming from browser is: " + c);
+			var trackPosition = msg.getFloat(0);
+			trackHandler.selectTrack(trackPosition);
 
 		});
 

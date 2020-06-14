@@ -47,11 +47,15 @@ body {
 }
 
 #tracks button {
-	width:6.25%;
+	width:6.24%;
 	float:left;
-	height:40px;
+	height:80px;
 	display: block;
 	border: none;
+	border-right: 1px solid #2e2e2e;
+	color:#fff;
+	font-weight: 600;
+	padding: 0 4px;
 }
 
 #bwSelector {
@@ -120,7 +124,7 @@ body {
 #bwRemoteControls {
 	width:20%;
 	float:right;
-	height: 560px;
+	height: 480px;
 	overflow-y: scroll;
 /*	position:absolute;
 	width:100%;*/
@@ -136,7 +140,9 @@ body {
 }
 
 #bwRemoteControls button.pageActive {
-	background-color: #fd872b;
+	background-image: linear-gradient(120deg, #fd7d28 2.63%, #444444 2.63%, #444444 50%, #fd7d28 50%, #fd7d28 52.63%, #444444 52.63%, #444444 100%);
+	background-size: 21.94px 38.00px;
+	color:#fff;
 }
 
 #currentTrack {
@@ -148,6 +154,7 @@ body {
 	font-weight: 800;
 	font-size: 20px;
 	border-bottom: 1px solid #2e2e2e;
+	border-right: 1px solid #2e2e2e;
 }
 
 #devices {
@@ -161,9 +168,9 @@ body {
 	border-bottom: 1px solid #2e2e2e;
 	font-size: 17px;
 	display:block;
-	background-color: #fd7d28;
+	background-color: #ccc;
 	text-align: center;
-	color:#fff;
+	color:#2e2e2e;
 	border-right: 1px solid #2e2e2e;
 }
 
@@ -176,11 +183,13 @@ body {
 	background-color: #426a7f;
 	float:left;
 	width:12.5%;
+	color:#fff;
 }
 
 #devices button.deviceActive {
 	background-image: linear-gradient(120deg, #fd7d28 2.63%, #444444 2.63%, #444444 50%, #fd7d28 50%, #fd7d28 52.63%, #444444 52.63%, #444444 100%);
 	background-size: 21.94px 38.00px;
+	color:#fff;
 }
 
 #devices button.slotActive {
@@ -191,6 +200,7 @@ body {
 #devices button.slotDeviceActive {
 	background-image: linear-gradient(120deg, #426a7f 2.63%, #444444 2.63%, #444444 50%, #426a7f 50%, #426a7f 52.63%, #444444 52.63%, #444444 100%);
 	background-size: 21.94px 38.00px;
+	color:#fff;
 }
 
 #devices button.deviceSlotDevice {
