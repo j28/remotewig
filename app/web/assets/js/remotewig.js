@@ -12,7 +12,6 @@ var port = new osc.WebSocketPort({
 var bitwig = {};
 bitwig.localState = [];
 
-
 port.on("bundle", function(oscBundle) {
 
 	console.log("bundle received..." + oscBundle.packets[0].address);
@@ -188,7 +187,6 @@ bitwig.concatColor = function(colorRed, colorGreen, colorBlue) {
 
 };
 
-
 bitwig.renderTrackInfo = function(oscBundle) {
 	// $("#message").text(JSON.stringify(oscBundle, null, 2));
 
@@ -238,36 +236,34 @@ bitwig.renderTrackInfo = function(oscBundle) {
 
 		devicesEl.insertAdjacentHTML("beforeend", markupDevice);
 
-		var deviceSlots = value.packets[1].packets;
+		if(value.packets[1]){
 
-		// console.log("device slots:");
-		// console.log(deviceSlots);
-		var deviceName = value.packets[0].args[0];
-		// console.log(deviceSlots);
+			var deviceSlots = value.packets[1].packets;
+			deviceSlots.forEach(function(slotValue, slotIndex) {
 
-		deviceSlots.forEach(function(slotValue, slotIndex) {
+				var nthChild = index + 1;
+				var selectorString = "#devices div:nth-child(" + nthChild + ") span";
+				// console.log("selectorString:" + selectorString);
+				var selectorTest = document.querySelector(selectorString);
+				// console.log("selectorTest.....: " + selectorTest.childElementCount);
 
-			var nthChild = index + 1;
-			var selectorString = "#devices div:nth-child(" + nthChild + ") span";
-			// console.log("selectorString:" + selectorString);
-			var selectorTest = document.querySelector(selectorString);
-			// console.log("selectorTest.....: " + selectorTest.childElementCount);
+				const slot = {
+					deviceSlot: slotValue.args[0],
+					slotIndex: slotIndex,
+					index: index
+				};
 
-			const slot = {
-				deviceSlot: slotValue.args[0],
-				slotIndex: slotIndex,
-				index: index
-			};
+				const markupDeviceSlot = `
+				<button class="deviceSlot" data-slot-name="${slot.deviceSlot}" data-slot-index="${slot.slotIndex}" data-parent-device-index="${slot.index}">
+					${slot.deviceSlot}
+				</button>
+				`;
 
-			const markupDeviceSlot = `
-			<button class="deviceSlot" data-slot-name="${slot.deviceSlot}" data-slot-index="${slot.slotIndex}" data-parent-device-index="${slot.index}">
-				${slot.deviceSlot}
-			</button>
-			`;
+				selectorTest.insertAdjacentHTML("beforeend", markupDeviceSlot);
 
-			selectorTest.insertAdjacentHTML("beforeend", markupDeviceSlot);
+			});
+		}
 
-		});
 	});
 
 	document.querySelectorAll('.device').forEach(item => {
