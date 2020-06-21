@@ -26,12 +26,6 @@ function TrackHandler(trackbank, cursorTrack) {
 	this.cursorTrack.color().markInterested();
 	this.cursorTrack.position().markInterested();
 
-	// this.cursorTrack.position().addValueObserver(this.updateLocalState);
-	// this.cursorTrack.name().addValueObserver(this.cursorTrackNameObserver);
-	// this.cursorTrack.color().addValueObserver(this.cursorTrackColorObserver);
-	// this.cursorTrack.getDevice (0).name ().get().markInterested();
-
-
 }
 
 TrackHandler.prototype.updateLocalState = function() {
@@ -67,7 +61,7 @@ TrackHandler.prototype.selectTrack = function(trackPosition) {
 
 TrackHandler.prototype.cursorTrackPositionSend = function() {
 
-	var trackPositionAPI = this.cursorTrack.position().get();
+	// var trackPositionAPI = this.cursorTrack.position().get();
 	// println("track name is: " + trackName);
 
 	var cursorTrackName = this.cursorTrack.name().get();
@@ -76,14 +70,17 @@ TrackHandler.prototype.cursorTrackPositionSend = function() {
 
 		var track = this.trackbank.getItemAt(i);
 		var trackName = track.name().get();
-
+		// println("track name is: " + trackName);
 		if(cursorTrackName == trackName){
 			trackPosition = i;
-		} 
+		} else {
+			trackPosition = -1;
+		}
 
 	}
 
-	println("track position based on api: " + trackPositionAPI);
+	// println("cursorTrack name is: " + cursorTrackName);
+	// println("track position based on api: " + trackPositionAPI);
 	println("track position based on calc: " + trackPosition);
 
 	var oscArgs = [];
