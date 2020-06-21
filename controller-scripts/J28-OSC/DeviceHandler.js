@@ -33,7 +33,7 @@ function DeviceHandler(cursorTrack, cursorDevice) {
 	chainSelector.chainCount().markInterested();
 	chainSelector.exists().markInterested();
 
-	this.layerBank = this.cursorDevice.createLayerBank(4);
+	this.layerBank = this.cursorDevice.createLayerBank(8);
 	for (var i = 0; i < this.layerBank.getSizeOfBank(); i++) {
 		this.layerBank.getItemAt(i).name().markInterested();
 	}
