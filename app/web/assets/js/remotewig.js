@@ -218,6 +218,9 @@ bitwig.renderTrackInfo = function(oscBundle) {
 
 	devices.forEach(function(value, index) {
 
+		// console.log("each device contains:");
+		// console.log(value);
+
 		var isActive = value.packets[0].args[1];
 
 		const device = {
@@ -236,16 +239,20 @@ bitwig.renderTrackInfo = function(oscBundle) {
 
 		devicesEl.insertAdjacentHTML("beforeend", markupDevice);
 
+		var nthChild = index + 1;
+
 		if(value.packets[1]){
 
 			var deviceSlots = value.packets[1].packets;
+			// console.log("device slots:");
+			// console.log(deviceSlots);
+
 			deviceSlots.forEach(function(slotValue, slotIndex) {
 
-				var nthChild = index + 1;
 				var selectorString = "#devices div:nth-child(" + nthChild + ") span";
+				var selector = document.querySelector(selectorString);
 				// console.log("selectorString:" + selectorString);
-				var selectorTest = document.querySelector(selectorString);
-				// console.log("selectorTest.....: " + selectorTest.childElementCount);
+				// console.log("selector.....: " + selector.childElementCount);
 
 				const slot = {
 					deviceSlot: slotValue.args[0],
@@ -259,11 +266,40 @@ bitwig.renderTrackInfo = function(oscBundle) {
 				</button>
 				`;
 
-				selectorTest.insertAdjacentHTML("beforeend", markupDeviceSlot);
+				selector.insertAdjacentHTML("beforeend", markupDeviceSlot);
 
 			});
 		}
 
+		if(index == 0 && value.packets[2]){
+
+			var instrChains = value.packets[2].packets;
+			// console.log("instrument chains:");
+			// console.log(instrChains);
+
+			instrChains.forEach(function(instrValue, instrIndex) {
+
+				var isActive = instrValue.args[1];
+				var selectorString = "#devices div:nth-child(" + nthChild + ")";
+				var selector = document.querySelector(selectorString);
+
+				const instr = {
+					instrName: instrValue.args[0],
+					instrIndex: instrIndex,
+					index: index
+				};
+
+				const markupInstr = `
+				<button class="instr${isActive ? ' instrActive' : ''}" data-instr-name="${instr.instrName}" data-instr-index="${instr.instrIndex}" data-parent-device-index="${instr.index}">
+					${instr.instrName}
+				</button>
+				`;
+
+				selector.insertAdjacentHTML("beforeend", markupInstr);
+
+			});
+
+		}
 	});
 
 	document.querySelectorAll('.device').forEach(item => {
@@ -330,6 +366,26 @@ bitwig.renderTrackInfo = function(oscBundle) {
 
 		});
 	});
+
+	document.querySelectorAll('.instr').forEach(item => {
+		item.addEventListener('click', event => {
+
+			document.querySelectorAll('.instr').forEach(item => {
+				item.classList.remove("instrActive");
+			});
+			event.target.classList.add("instrActive");
+
+			var oscArgs = [];
+			oscArgs[0] = parseInt(event.target.getAttribute("data-instr-index"));
+
+			port.send({
+				address: "/device/instrument/select",
+				args: oscArgs
+			});
+
+		});
+	});
+
 };
 
 

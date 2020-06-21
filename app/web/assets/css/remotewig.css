@@ -178,6 +178,16 @@ body {
 	border-right: 1px solid #2e2e2e;
 }
 
+#devices button.instr {
+	float:left;
+	width:12.5%;
+	opacity:0.4;
+}
+
+#devices button.instrActive {
+	opacity:1;
+}
+
 #devices button.device {
 	float:left;
 	clear:left;
