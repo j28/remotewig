@@ -14,6 +14,7 @@ host.defineController("J28", "OSC", "0.1", "090e6d3a-d7f0-4371-b0c4-59363cedf35d
 
 var sender = null;
 var isEngineOn = false;
+var chainSelector = null;
 
 function cursorDevicePositionObserver() {
 	// deviceHandler.currentDevices();
@@ -148,6 +149,16 @@ function init() {
 			// println("c coming from browser is: " + c);
 			var trackPosition = msg.getFloat(0);
 			trackHandler.selectTrack(trackPosition);
+
+		});
+
+	as.registerMethod('/device/instrument/select',
+		',f',
+		'Select track',
+		function(c, msg) {
+			// println("c coming from browser is: " + c);
+			var chainIndex = msg.getFloat(0);
+			deviceHandler.selectChain(chainIndex);
 
 		});
 
