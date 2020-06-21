@@ -136,12 +136,14 @@ DeviceHandler.prototype.browserSelectDevice = function() {
 
 	println('\n\n');
 
+	// we have to select parent device first
 	this.cursorDevice.selectParent();
 
 	host.scheduleTask(function() {
 		// println ("parent device name: " + deviceHandler.cursorDevice.name (). get());
 		// println ("browser state: " + browserState[1]);
 
+		// selecting the root device
 		deviceHandler.cursorDevice.selectDevice(deviceBank.getDevice(browserState[1]));
 		localState[1] = browserState[1];
 
@@ -151,6 +153,7 @@ DeviceHandler.prototype.browserSelectDevice = function() {
 		println('after select localState[0]: ' + localState[0]);
 		println('after select localState[1]: ' + localState[1]);
 
+		// select device inside device slot if this is what's coming from browser
 		if (browserState[2] > -1) {
 			host.scheduleTask(function() {
 				println('ACTIVE slot is: ' + browserState[2]);
@@ -187,6 +190,7 @@ DeviceHandler.prototype.browserSelectDevice = function() {
 			}, 50);
 
 		} else {
+
 			deviceHandler.updateBrowserRoot();
 
 		}
@@ -346,6 +350,16 @@ DeviceHandler.prototype.updateBrowserRoot = function() {
 
 // update device slot devices
 DeviceHandler.prototype.updateBrowserSlotDevices = function() {
+
+
+	println('after select localState[1]: ' + localState[1]);
+	println('after select localState[2]: ' + localState[2]);
+	println('after select localState[3]: ' + localState[3]);
+
+	println('after select browserState[1]: ' + browserState[1]);
+	println('after select browserState[2]: ' + browserState[2]);
+	println('after select browserState[3]: ' + browserState[3]);
+
 
 	host.scheduleTask(function() {
 		deviceHandler.currentDeviceName = deviceHandler.cursorDevice.name().get();

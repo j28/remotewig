@@ -194,6 +194,7 @@ bitwig.renderTrackInfo = function(oscBundle) {
 
 	var trackPosition = oscBundle.packets[0].args[0];
 	bitwig.localState[0] = trackPosition;
+	console.log("track position is: " + trackPosition);
 
 	var trackName = oscBundle.packets[1].args[0];
 	console.log("track name is: " + trackName);
@@ -391,7 +392,7 @@ bitwig.renderTrackInfo = function(oscBundle) {
 
 bitwig.renderSlotDevices = function(oscBundle) {
 
-	// console.log(oscBundle);
+	console.log(oscBundle);
 	// var deviceSlotDevicesReversed = oscBundle.packets;
 	var deviceSlotDevices = oscBundle.packets;
 	console.log(deviceSlotDevices);
@@ -434,7 +435,7 @@ bitwig.renderSlotDevices = function(oscBundle) {
 			document.querySelectorAll('.deviceSlot').forEach(item => {
 				item.classList.remove("slotDeviceActive");
 			});
-			event.target.classList.add("slotDeviceActive");
+			// event.target.classList.add("slotDeviceActive");
 
 			var slotDeviceIndex = parseInt(event.target.getAttribute("data-slot-device"));
 

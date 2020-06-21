@@ -1,4 +1,4 @@
-loadAPI(11);
+loadAPI(10);
 load("polyfill.js");
 load("TransportHandler.js");
 load("PanelHandler.js");

@@ -31,11 +31,25 @@ function TrackHandler(trackbank, cursorTrack) {
 	// this.cursorTrack.color().addValueObserver(this.cursorTrackColorObserver);
 	// this.cursorTrack.getDevice (0).name ().get().markInterested();
 
+
 }
 
 TrackHandler.prototype.updateLocalState = function() {
 
-	localState[0] = this.cursorTrack.position().get();
+	// localState[0] = trackHandler.cursorTrack.position().get();
+	// println("track POSITION is: " + localState[0]);
+
+	var cursorTrackName = this.cursorTrack.name().get();
+	for (i = 0; i < trackHandler.trackbank.getSizeOfBank(); i++) {
+
+		var track = trackHandler.trackbank.getItemAt(i);
+		var trackName = track.name().get();
+
+		if(cursorTrackName == trackName){
+			localState[0] = i;
+		} 
+
+	}
 
 	host.scheduleTask(function() {
 		deviceHandler.updateBrowserRoot();
@@ -53,8 +67,24 @@ TrackHandler.prototype.selectTrack = function(trackPosition) {
 
 TrackHandler.prototype.cursorTrackPositionSend = function() {
 
-	var trackPosition = this.cursorTrack.position().get();
+	var trackPositionAPI = this.cursorTrack.position().get();
 	// println("track name is: " + trackName);
+
+	var cursorTrackName = this.cursorTrack.name().get();
+	var trackPosition;
+	for (i = 0; i < this.trackbank.getSizeOfBank(); i++) {
+
+		var track = this.trackbank.getItemAt(i);
+		var trackName = track.name().get();
+
+		if(cursorTrackName == trackName){
+			trackPosition = i;
+		} 
+
+	}
+
+	println("track position based on api: " + trackPositionAPI);
+	println("track position based on calc: " + trackPosition);
 
 	var oscArgs = [];
 	oscArgs[0] = trackPosition;
@@ -117,6 +147,7 @@ TrackHandler.prototype.tracksColorsSend = function() {
 			tracksColors[i][2] = currentColorBlue;
 			tracksColors[i][3] = trackName;
 
+			// we can't use position until api bug is fixed
 			if(cursorTrackName == trackName){
 				tracksColors[i][4] = true;
 			} else {
