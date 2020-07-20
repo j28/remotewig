@@ -151,9 +151,9 @@ TrackHandler.prototype.tracksColorsSend = function() {
 				tracksColors[i][4] = false;
 			}
 
-			println("\ncurrentColor Red is: " + currentColorRed);
-			println("currentColor Green is: " + currentColorGreen);
-			println("currentColor Blue is: " + currentColorBlue);
+			// println("\ncurrentColor Red is: " + currentColorRed);
+			// println("currentColor Green is: " + currentColorGreen);
+			// println("currentColor Blue is: " + currentColorBlue);
 
 			try {
 				sender.sendMessage('/track/render', tracksColors[i]);
