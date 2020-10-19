@@ -7,6 +7,8 @@ body {
 	background-color: #2e2e2e;
 	font-family: Poppins;
 	color: #fff;
+	position:fixed;
+	width:100%;
 }
 
 @font-face {
@@ -106,6 +108,10 @@ body {
 
 .slider {
 	margin:20px;
+	height:500px;
+	width:100px;
+	overflow: hidden;
+	float:left;
 }
 .slider ::-webkit-slider-runnable-track {
 	background: #ccc;
@@ -133,7 +139,9 @@ body {
 }
 
 #bindingTest {
-	margin-left:200px;
+	margin-left:20px;
+	width:100px;
+	text-align: center;
 }
 
 
