@@ -70,11 +70,72 @@ body {
 
 #bwControls {
 	position: fixed;
-	bottom: 0;
+	bottom: 80px;
 	background-color: red;
 	width: 100%;
 	height:160px;
 }
+#navMain {
+	position: fixed;
+	bottom: 0;
+	background-color: red;
+	width: 100%;
+	height:80px;
+	padding:0;
+	margin:0;
+}
+#navMain button {
+	padding:0;
+	margin:0;
+	width: 50%;
+	float:left;
+	text-align: center;
+	display:inline-block;
+	font-size:18px;
+	line-height: 80px;
+	background-color: #333;
+	border:none;
+	color:#fff;
+}
+.page {
+	display:none;
+}
+.pageActive {
+	display:block;
+}
+
+.slider {
+	margin:20px;
+}
+.slider ::-webkit-slider-runnable-track {
+	background: #ccc;
+}
+.slider input[type="range"] { 
+	height: 100px; /* width */
+	width: 500px; /* height */
+	margin-top:200px;
+	margin-left:-200px;  
+	/* (width / 2) - (1/2 * height) */
+	-webkit-transform: rotate(270deg);
+	-webkit-appearance: none;
+	overflow: hidden;
+	border-radius: 0; /* iOS */
+
+}
+/* Set to 0 width and remove border for a slider without a thumb */
+.slider ::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 30px;
+	height: 100px; /* match height above */
+	background: rgba(0,0,0,0.5);
+	box-shadow: -100vw 0 0 100vw red;
+	border: none;
+}
+
+#bindingTest {
+	margin-left:200px;
+}
+
 
 #bwControls button {
 	height:80px;

@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		document.getElementById("messageArea").style.display = "none";
 	}
 	bitwig.initControls();
+	bitwig.initNav();
 });
 
 var port = new osc.WebSocketPort({
@@ -512,6 +513,33 @@ bitwig.renderRemoteControls = function(oscBundle) {
 
 		});
 	});
+};
+
+bitwig.initNav = function(){
+
+	document.querySelectorAll('.mainNavItem').forEach(item => {
+		item.addEventListener('click', event => {
+			document.querySelectorAll('.page').forEach(item => {
+				item.classList.remove("pageActive");
+			});
+			let selector = "#" + event.target.getAttribute("data-page");
+			document.querySelector(selector).classList.add("pageActive");
+		});
+	});
+
+	var obj = {a:50}
+	var myInputElement1 = document.getElementById("mySlider")
+	var myDOMElement = document.getElementById("myDomElement")
+
+	new Binding({
+		object: obj,
+		property: "a"
+	})
+	.addBinding(myInputElement1, "value", "input")
+	.addBinding(myDOMElement, "innerHTML")
+
+	obj.a = 75;
+
 };
 
 bitwig.initControls = function(oscMessage) {

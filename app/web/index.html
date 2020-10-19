@@ -9,62 +9,85 @@
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" type="text/css" media="all" href="assets/css/remotewig.css"></link>
 <script src="node_modules/osc/dist/osc-browser.min.js"></script>
+<script src="assets/js/d3.v6.min.js"></script>
+<script src="assets/js/scripts.js"></script>
 <script src="assets/js/remotewig.js"></script>
 <!-- <script src="assets/js/live.js"></script> -->
 </head>
 
 <body>
 
-<div id="tracks">
+
+<div id="navMain">
+	<button class="mainNavItem" id="navHome" data-page="pageHome">Main</button>
+	<button class="mainNavItem" id="navRemote" data-page="pageRemote">Remote</button>
 </div>
 
-<div id="bwRemoteControls">
+<div class="page pageActive" id="pageHome">
+
+<div class="slider">
+	<input type="range" id="mySlider" min="1" max="127" step="1">
 </div>
 
-<div id="bwSelector">
-	<div id="currentTrack">
+<div id="bindingTest">
+	<span type=text id="myDomElement"></span>
+</div>
+
+</div>
+
+<div class="page" id="pageRemote">
+	<div id="tracks">
 	</div>
-	<div id="devices">
+
+	<div id="bwRemoteControls">
 	</div>
-</div>
 
-<div id="bwControls">
+	<div id="bwSelector">
+		<div id="currentTrack">
+		</div>
+		<div id="devices">
+		</div>
+	</div>
 
-	<button id="pDevices">Devices</button>
-	<button id="pNotes">Notes</button>
-	<button id="pInspector">Inspector</button>
-	<button id="pMeter">Meter</button>
-	<button id="pIo">IO</button>
+	<div id="bwControls">
 
-	<button id="dToggle">Enabled</button>
-	<button id="dDetail">Detail</button>
-	<button id="dExpanded">Expanded</button>
-	<button id="dRemoteControls">Remote Controls</button>
+		<button id="pDevices">Devices</button>
+		<button id="pNotes">Notes</button>
+		<button id="pInspector">Inspector</button>
+		<button id="pMeter">Meter</button>
+		<button id="pIo">IO</button>
 
-	<button id="aPlay">
-		<svg version="1.1" 
-			id="Capa_1" 
-			xmlns="http://www.w3.org/2000/svg" 
-			xmlns:xlink="http://www.w3.org/1999/xlink" 
-			x="0px" 
-			y="0px" 
-			viewBox="0 0 477.886 477.886" 
-			style="enable-background:new 0 0 477.886 477.886;" 
-			xml:space="preserve">
-			<g>
+		<button id="dToggle">Enabled</button>
+		<button id="dDetail">Detail</button>
+		<button id="dExpanded">Expanded</button>
+		<button id="dRemoteControls">Remote Controls</button>
+
+		<button id="aPlay">
+			<svg version="1.1" 
+				id="Capa_1" 
+				xmlns="http://www.w3.org/2000/svg" 
+				xmlns:xlink="http://www.w3.org/1999/xlink" 
+				x="0px" 
+				y="0px" 
+				viewBox="0 0 477.886 477.886" 
+				style="enable-background:new 0 0 477.886 477.886;" 
+				xml:space="preserve">
 				<g>
-					<path d="M476.091,231.332c-1.654-3.318-4.343-6.008-7.662-7.662L24.695,1.804C16.264-2.41,6.013,1.01,1.8,9.442c-1.185,2.371-1.801,4.986-1.8,7.637v443.733c-0.004,9.426,7.633,17.07,17.059,17.075c2.651,0.001,5.266-0.615,7.637-1.8L468.429,254.22C476.865,250.015,480.295,239.768,476.091,231.332z"/>
+					<g>
+						<path d="M476.091,231.332c-1.654-3.318-4.343-6.008-7.662-7.662L24.695,1.804C16.264-2.41,6.013,1.01,1.8,9.442c-1.185,2.371-1.801,4.986-1.8,7.637v443.733c-0.004,9.426,7.633,17.07,17.059,17.075c2.651,0.001,5.266-0.615,7.637-1.8L468.429,254.22C476.865,250.015,480.295,239.768,476.091,231.332z"/>
+					</g>
 				</g>
-			</g>
-		</svg>
-	</button>
+			</svg>
+		</button>
 
+	</div>
+
+
+
+	<div id="messageArea">
+		<pre id="message">Select a track</pre>
+		<button id="butSend" onclick="sendManual()">Send OSC message</button>
+	</div>
 </div>
-
-<div id="messageArea">
-	<pre id="message">Select a track</pre>
-	<button id="butSend" onclick="sendManual()">Send OSC message</button>
-</div>
-
 </body>
 </html>
