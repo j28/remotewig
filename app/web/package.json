@@ -1,6 +1,6 @@
 {
 	"name": "remotewig-web",
-	"version": "0.1",
+	"version": "0.1.0",
 	"ignore": [],
 	"dependencies": {
 		"osc": "2.4.0"

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 var port = new osc.WebSocketPort({
-	url: "ws://10.0.0.2:8081" // ws://10.0.0.21:8081 in win, ws://10.0.0.2:8081 in mac
+	url: "ws://10.0.0.14:8083" // ws://10.0.0.21:8081 in win, ws://10.0.0.2:8081 in mac
 });
 
 var bitwig = {};

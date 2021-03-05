@@ -9,7 +9,7 @@ var serveStatic = require('serve-static');
 
 connect()
 	.use(serveStatic(__dirname))
-	.listen(8080, () => console.log('Server running on 8080...'));
+	.listen(8082, () => console.log('Server running on 8080...'));
 
 var getIPAddresses = function () {
 	var os = require("os"),
@@ -33,9 +33,9 @@ var getIPAddresses = function () {
 
 var udp = new osc.UDPPort({
 	localAddress: "0.0.0.0",
-	localPort: 7400,
+	localPort: 7401,
 	remoteAddress: "127.0.0.1",
-	remotePort: 7500,
+	remotePort: 7501,
 	metadata: true
 });
 
@@ -51,7 +51,7 @@ udp.on("ready", function () {
 udp.open();
 
 var wss = new WebSocket.Server({
-	port: 8081
+	port: 8083
 });
 
 wss.on("connection", function (socket) {
