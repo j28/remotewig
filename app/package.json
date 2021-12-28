@@ -12,7 +12,7 @@
 			"web/***/**/*"
 		]
 	},
-	"version": "0.1",
+	"version": "0.1.0",
 	"description": "remotewig is a bridge between a web browser and Bitwig.",
 	"author": "J28",
 	"homepage": "http://stoyanvasilev.me/",
